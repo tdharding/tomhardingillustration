@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tom Harding Illustration</title>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400&family=Source+Sans+3:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #f7f5f2;
+      --text: #1a1a18;
+      --muted: #8a8880;
+      --accent: #1a1a18;
+      --line: #d8d5d0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Source Sans 3', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 480px;
+      width: 100%;
+      opacity: 0;
+      animation: fadeUp 0.9s ease forwards;
+      animation-delay: 0.2s;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .title {
+      font-family: 'Libre Baskerville', serif;
+      font-weight: 300;
+      font-size: clamp(1.8rem, 6vw, 2.6rem);
+      letter-spacing: 0.01em;
+      line-height: 1.1;
+      margin-bottom: 0.3rem;
+    }
+
+    .divider {
+      width: 32px;
+      height: 1px;
+      background: var(--line);
+      margin: 1.6rem 0;
+    }
+
+    .label {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.1rem;
+    }
+
+    .links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .links li {
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards;
+    }
+    .links li:nth-child(1) { animation-delay: 0.55s; }
+    .links li:nth-child(2) { animation-delay: 0.7s; }
+    .links li:nth-child(3) { animation-delay: 0.85s; }
+    .links li:nth-child(4) { animation-delay: 1.0s; }
+
+    .links a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.85rem 0;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      border-bottom: 1px solid var(--line);
+      transition: color 0.2s ease, padding-left 0.25s ease;
+    }
+
+    .links a:hover {
+      color: var(--muted);
+      padding-left: 6px;
+    }
+
+    .links a .arrow {
+      font-size: 0.85rem;
+      opacity: 0.35;
+      transition: opacity 0.2s, transform 0.25s;
+    }
+
+    .links a:hover .arrow {
+      opacity: 0.7;
+      transform: translateX(4px);
+    }
+
+    footer {
+      margin-top: 3rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: var(--line);
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="title">Tom Harding<br>Illustration</h1>
+    <div class="divider"></div>
+    <p class="label">Portfolio</p>
+    <ul class="links">
+      <li>
+        <a href="https://drive.google.com/file/d/1kcQG_xeZqSTxF7iTN8RZMUDJe3TBYpiA/view?usp=sharing" target="_blank" rel="noopener">
+          Game Development &amp; Game Art <span class="arrow">→</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://drive.google.com/file/d/1OWszTRND5xBN60WNrS6-0cihCcZHzG59/view?usp=drive_link" target="_blank" rel="noopener">
+          Game Dev &amp; Art — Show Reel <span class="arrow">→</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://drive.google.com/file/d/1eP51U-AShenAsDseO--abXZWBgoi1pz3/view?usp=drive_link" target="_blank" rel="noopener">
+          General Portfolio — Illustration, 3D &amp; More <span class="arrow">→</span>
+        </a>
+      </li>
+    </ul>
+    <footer>© 2026 Tom Harding</footer>
+  </div>
+</body>
+</html>
