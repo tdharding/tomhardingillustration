@@ -6,17 +6,12 @@
   <title>Tom Harding Illustration</title>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400&family=Source+Sans+3:wght@300;400&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --bg: #f7f5f2;
       --text: #1a1a18;
       --muted: #8a8880;
-      --accent: #1a1a18;
       --line: #d8d5d0;
     }
 
@@ -26,16 +21,12 @@
       font-family: 'Source Sans 3', sans-serif;
       font-weight: 300;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
+      padding: 4rem 2rem;
     }
 
     .container {
-      max-width: 480px;
-      width: 100%;
+      max-width: 720px;
+      margin: 0 auto;
       opacity: 0;
       animation: fadeUp 0.9s ease forwards;
       animation-delay: 0.2s;
@@ -48,11 +39,10 @@
 
     .title {
       font-family: 'Libre Baskerville', serif;
-      font-weight: 300;
+      font-weight: 400;
       font-size: clamp(1.8rem, 6vw, 2.6rem);
       letter-spacing: 0.01em;
       line-height: 1.1;
-      margin-bottom: 0.3rem;
     }
 
     .divider {
@@ -70,50 +60,83 @@
       margin-bottom: 1.1rem;
     }
 
-    .links {
+    .portfolio {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 0.15rem;
     }
 
-    .links li {
+    .portfolio li {
       opacity: 0;
       animation: fadeUp 0.7s ease forwards;
+      border-bottom: 1px solid var(--line);
     }
-    .links li:nth-child(1) { animation-delay: 0.55s; }
-    .links li:nth-child(2) { animation-delay: 0.7s; }
-    .links li:nth-child(3) { animation-delay: 0.85s; }
-    .links li:nth-child(4) { animation-delay: 1.0s; }
+    .portfolio li:nth-child(1) { animation-delay: 0.5s; }
+    .portfolio li:nth-child(2) { animation-delay: 0.65s; }
+    .portfolio li:nth-child(3) { animation-delay: 0.8s; }
 
-    .links a {
+    .portfolio-btn {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0.85rem 0;
+      width: 100%;
+      padding: 0.9rem 0;
+      background: none;
+      border: none;
+      cursor: pointer;
       color: var(--text);
-      text-decoration: none;
+      font-family: 'Source Sans 3', sans-serif;
       font-size: 0.95rem;
       font-weight: 300;
       letter-spacing: 0.04em;
-      border-bottom: 1px solid var(--line);
+      text-align: left;
       transition: color 0.2s ease, padding-left 0.25s ease;
     }
 
-    .links a:hover {
-      color: var(--muted);
-      padding-left: 6px;
-    }
+    .portfolio-btn:hover { color: var(--muted); padding-left: 6px; }
 
-    .links a .arrow {
+    .portfolio-btn .arrow {
       font-size: 0.85rem;
       opacity: 0.35;
-      transition: opacity 0.2s, transform 0.25s;
+      transition: opacity 0.2s, transform 0.3s;
+      flex-shrink: 0;
+      margin-left: 1rem;
     }
 
-    .links a:hover .arrow {
+    .portfolio-btn.open .arrow {
       opacity: 0.7;
-      transform: translateX(4px);
+      transform: rotate(90deg);
+    }
+
+    .embed-panel {
+      display: none;
+      padding: 1rem 0 1.5rem;
+    }
+
+    .embed-panel.open { display: block; }
+
+    .pdf-frame {
+      width: 100%;
+      height: 75vh;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      background: #fff;
+    }
+
+    .video-wrap {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+    }
+
+    .video-wrap iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: none;
     }
 
     footer {
@@ -130,24 +153,57 @@
     <h1 class="title">Tom Harding<br>Illustration</h1>
     <div class="divider"></div>
     <p class="label">Portfolio</p>
-    <ul class="links">
+
+    <ul class="portfolio">
+
       <li>
-        <a href="https://drive.google.com/file/d/1kcQG_xeZqSTxF7iTN8RZMUDJe3TBYpiA/view?usp=sharing" target="_blank" rel="noopener">
+        <button class="portfolio-btn" onclick="toggle(this, 'game-art')">
           Game Development &amp; Game Art <span class="arrow">→</span>
-        </a>
+        </button>
+        <div class="embed-panel" id="game-art">
+          <iframe class="pdf-frame" src="GameArtFolio.pdf" title="Game Art Portfolio"></iframe>
+        </div>
       </li>
+
       <li>
-        <a href="https://drive.google.com/file/d/1OWszTRND5xBN60WNrS6-0cihCcZHzG59/view?usp=drive_link" target="_blank" rel="noopener">
+        <button class="portfolio-btn" onclick="toggle(this, 'showreel')">
           Game Dev &amp; Art — Show Reel <span class="arrow">→</span>
-        </a>
+        </button>
+        <div class="embed-panel" id="showreel">
+          <div class="video-wrap">
+            <iframe src="https://www.youtube.com/embed/frCgh0a3msg" title="Show Reel" allowfullscreen></iframe>
+          </div>
+        </div>
       </li>
+
       <li>
-        <a href="https://drive.google.com/file/d/1eP51U-AShenAsDseO--abXZWBgoi1pz3/view?usp=drive_link" target="_blank" rel="noopener">
+        <button class="portfolio-btn" onclick="toggle(this, 'illustration')">
           General Portfolio — Illustration, 3D &amp; More <span class="arrow">→</span>
-        </a>
+        </button>
+        <div class="embed-panel" id="illustration">
+          <iframe class="pdf-frame" src="ArtAndIllustrationFolio.pdf" title="Art & Illustration Portfolio"></iframe>
+        </div>
       </li>
+
     </ul>
+
     <footer>© 2026 Tom Harding</footer>
   </div>
+
+  <script>
+    function toggle(btn, id) {
+      const panel = document.getElementById(id);
+      const isOpen = panel.classList.contains('open');
+
+      document.querySelectorAll('.embed-panel').forEach(p => p.classList.remove('open'));
+      document.querySelectorAll('.portfolio-btn').forEach(b => b.classList.remove('open'));
+
+      if (!isOpen) {
+        panel.classList.add('open');
+        btn.classList.add('open');
+        setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+      }
+    }
+  </script>
 </body>
 </html>
