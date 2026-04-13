@@ -44,6 +44,20 @@
       margin-top: 1.4rem;
     }
 
+    .dot-divider {
+      display: flex;
+      justify-content: center;
+      padding: 0.4rem 0;
+    }
+
+    .dot-divider span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #000;
+      display: block;
+    }
+
     .portfolio {
       list-style: none;
       display: flex;
@@ -165,6 +179,8 @@
         </div>
       </li>
 
+      <div class="dot-divider"><span></span></div>
+
       <li>
         <button class="portfolio-btn" onclick="toggle(this, 'game-art')">
           Game Development &amp; Game Art
@@ -176,6 +192,8 @@
           </div>
         </div>
       </li>
+
+      <div class="dot-divider"><span></span></div>
 
       <li>
         <button class="portfolio-btn" onclick="toggle(this, 'showreel')">
