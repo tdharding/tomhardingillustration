@@ -8,6 +8,8 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    html { overflow-y: scroll; }
+
     body {
       background: #f7f5f2;
       color: #000;
@@ -16,7 +18,6 @@
       min-height: 100vh;
       padding: 4rem 1.5rem;
       text-align: center;
-      scrollbar-gutter: stable;
     }
 
     .container {
@@ -174,7 +175,7 @@
         </button>
         <div class="embed-panel" id="illustration">
           <div class="pdf-wrapper">
-            <iframe class="pdf-frame" id="frame-illustration" src="ArtAndIllustrationFolio.pdf" title="Art & Illustration Portfolio"></iframe>
+            <iframe class="pdf-frame" id="frame-illustration" data-pdf="ArtAndIllustrationFolio.pdf" title="Art & Illustration Portfolio"></iframe>
             <button class="fullscreen-btn" onclick="openFullscreen('frame-illustration', 'ArtAndIllustrationFolio.pdf')">⤢ Full Screen</button>
           </div>
         </div>
@@ -188,7 +189,7 @@
         </button>
         <div class="embed-panel" id="game-art">
           <div class="pdf-wrapper">
-            <iframe class="pdf-frame" id="frame-game-art" src="GameArtFolio.pdf" title="Game Art Portfolio"></iframe>
+            <iframe class="pdf-frame" id="frame-game-art" data-pdf="GameArtFolio.pdf" title="Game Art Portfolio"></iframe>
             <button class="fullscreen-btn" onclick="openFullscreen('frame-game-art', 'GameArtFolio.pdf')">⤢ Full Screen</button>
           </div>
         </div>
@@ -213,6 +214,16 @@
   </div>
 
   <script>
+    const isMobile = window.innerWidth <= 768;
+    const baseUrl = window.location.href.replace(/\/[^/]*$/, '/');
+
+    function getPdfSrc(filename) {
+      if (isMobile) {
+        return 'https://docs.google.com/viewer?url=' + encodeURIComponent(baseUrl + filename) + '&embedded=true';
+      }
+      return filename;
+    }
+
     function toggle(btn, id) {
       const panel = document.getElementById(id);
       const isOpen = panel.classList.contains('open');
@@ -221,6 +232,10 @@
 
       if (!isOpen) {
         panel.classList.add('open');
+        const frame = panel.querySelector('iframe[data-pdf]');
+        if (frame && !frame.src) {
+          frame.src = getPdfSrc(frame.getAttribute('data-pdf'));
+        }
         setTimeout(() => btn.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
       }
     }
