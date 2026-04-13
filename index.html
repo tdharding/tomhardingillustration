@@ -8,24 +8,18 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    :root {
-      --bg: #f7f5f2;
-      --text: #1a1a18;
-      --muted: #8a8880;
-      --line: #d8d5d0;
-    }
-
     body {
-      background: var(--bg);
-      color: var(--text);
+      background: #f7f5f2;
+      color: #000;
       font-family: 'Source Sans 3', sans-serif;
       font-weight: 300;
       min-height: 100vh;
-      padding: 4rem 2rem;
+      padding: 4rem 1.5rem;
+      text-align: center;
     }
 
     .container {
-      max-width: 720px;
+      max-width: 680px;
       margin: 0 auto;
       opacity: 0;
       animation: fadeUp 0.9s ease forwards;
@@ -40,88 +34,87 @@
     .title {
       font-family: 'Libre Baskerville', serif;
       font-weight: 400;
-      font-size: clamp(1.8rem, 6vw, 2.6rem);
+      font-size: clamp(1.6rem, 5vw, 2.2rem);
       letter-spacing: 0.01em;
-      line-height: 1.1;
+      line-height: 1.15;
+      color: #000;
     }
 
-    .divider {
-      width: 32px;
-      height: 1px;
-      background: var(--line);
-      margin: 1.6rem 0;
-    }
-
-    .label {
-      font-size: 0.68rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 1.1rem;
+    .spacer {
+      margin-top: 1.4rem;
     }
 
     .portfolio {
       list-style: none;
       display: flex;
       flex-direction: column;
+      gap: 0.25rem;
     }
 
     .portfolio li {
       opacity: 0;
       animation: fadeUp 0.7s ease forwards;
-      border-bottom: 1px solid var(--line);
     }
     .portfolio li:nth-child(1) { animation-delay: 0.5s; }
     .portfolio li:nth-child(2) { animation-delay: 0.65s; }
     .portfolio li:nth-child(3) { animation-delay: 0.8s; }
 
     .portfolio-btn {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      display: block;
       width: 100%;
-      padding: 0.9rem 0;
+      padding: 0.7rem 0;
       background: none;
       border: none;
       cursor: pointer;
-      color: var(--text);
+      color: #000;
       font-family: 'Source Sans 3', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 300;
+      font-size: clamp(0.9rem, 2.5vw, 1rem);
+      font-weight: 400;
       letter-spacing: 0.04em;
-      text-align: left;
-      transition: color 0.2s ease, padding-left 0.25s ease;
+      text-align: center;
+      transition: opacity 0.2s ease;
     }
 
-    .portfolio-btn:hover { color: var(--muted); padding-left: 6px; }
-
-    .portfolio-btn .arrow {
-      font-size: 0.85rem;
-      opacity: 0.35;
-      transition: opacity 0.2s, transform 0.3s;
-      flex-shrink: 0;
-      margin-left: 1rem;
-    }
-
-    .portfolio-btn.open .arrow {
-      opacity: 0.7;
-      transform: rotate(90deg);
-    }
+    .portfolio-btn:hover { opacity: 0.55; }
 
     .embed-panel {
       display: none;
-      padding: 1rem 0 1.5rem;
+      padding: 0.75rem 0 1.25rem;
     }
 
     .embed-panel.open { display: block; }
 
+    .pdf-wrapper {
+      position: relative;
+    }
+
     .pdf-frame {
       width: 100%;
-      height: 75vh;
-      border: 1px solid var(--line);
+      height: 70vh;
+      border: 1px solid #d8d5d0;
       border-radius: 4px;
       background: #fff;
+      display: block;
     }
+
+    .fullscreen-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(255,255,255,0.9);
+      border: 1px solid #d8d5d0;
+      border-radius: 4px;
+      padding: 5px 9px;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      color: #000;
+      font-family: 'Source Sans 3', sans-serif;
+      transition: background 0.2s;
+    }
+
+    .fullscreen-btn:hover { background: #fff; }
 
     .video-wrap {
       position: relative;
@@ -129,7 +122,7 @@
       height: 0;
       border-radius: 4px;
       overflow: hidden;
-      border: 1px solid var(--line);
+      border: 1px solid #d8d5d0;
     }
 
     .video-wrap iframe {
@@ -143,31 +136,38 @@
       margin-top: 3rem;
       font-size: 0.7rem;
       letter-spacing: 0.1em;
-      color: var(--line);
+      color: #aaa;
       text-transform: uppercase;
+    }
+
+    @media (max-width: 480px) {
+      body { padding: 2.5rem 1rem; }
+      .pdf-frame { height: 55vh; }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1 class="title">Tom Harding<br>Illustration</h1>
-    <div class="divider"></div>
-    <p class="label">Portfolio</p>
+    <div class="spacer"></div>
 
     <ul class="portfolio">
 
       <li>
         <button class="portfolio-btn" onclick="toggle(this, 'game-art')">
-          Game Development &amp; Game Art <span class="arrow">→</span>
+          Game Development &amp; Game Art
         </button>
         <div class="embed-panel" id="game-art">
-          <iframe class="pdf-frame" src="GameArtFolio.pdf" title="Game Art Portfolio"></iframe>
+          <div class="pdf-wrapper">
+            <iframe class="pdf-frame" id="frame-game-art" src="GameArtFolio.pdf" title="Game Art Portfolio"></iframe>
+            <button class="fullscreen-btn" onclick="openFullscreen('frame-game-art', 'GameArtFolio.pdf')">⤢ Full Screen</button>
+          </div>
         </div>
       </li>
 
       <li>
         <button class="portfolio-btn" onclick="toggle(this, 'showreel')">
-          Game Dev &amp; Art — Show Reel <span class="arrow">→</span>
+          Game Dev &amp; Art — Show Reel
         </button>
         <div class="embed-panel" id="showreel">
           <div class="video-wrap">
@@ -178,10 +178,13 @@
 
       <li>
         <button class="portfolio-btn" onclick="toggle(this, 'illustration')">
-          General Portfolio — Illustration, 3D &amp; More <span class="arrow">→</span>
+          General Portfolio — Illustration, 3D &amp; More
         </button>
         <div class="embed-panel" id="illustration">
-          <iframe class="pdf-frame" src="ArtAndIllustrationFolio.pdf" title="Art & Illustration Portfolio"></iframe>
+          <div class="pdf-wrapper">
+            <iframe class="pdf-frame" id="frame-illustration" src="ArtAndIllustrationFolio.pdf" title="Art & Illustration Portfolio"></iframe>
+            <button class="fullscreen-btn" onclick="openFullscreen('frame-illustration', 'ArtAndIllustrationFolio.pdf')">⤢ Full Screen</button>
+          </div>
         </div>
       </li>
 
@@ -196,12 +199,21 @@
       const isOpen = panel.classList.contains('open');
 
       document.querySelectorAll('.embed-panel').forEach(p => p.classList.remove('open'));
-      document.querySelectorAll('.portfolio-btn').forEach(b => b.classList.remove('open'));
 
       if (!isOpen) {
         panel.classList.add('open');
-        btn.classList.add('open');
         setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+      }
+    }
+
+    function openFullscreen(frameId, pdfSrc) {
+      const frame = document.getElementById(frameId);
+      if (frame.requestFullscreen) {
+        frame.requestFullscreen();
+      } else if (frame.webkitRequestFullscreen) {
+        frame.webkitRequestFullscreen();
+      } else {
+        window.open(pdfSrc, '_blank');
       }
     }
   </script>
