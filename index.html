@@ -154,6 +154,18 @@
     <ul class="portfolio">
 
       <li>
+        <button class="portfolio-btn" onclick="toggle(this, 'illustration')">
+          General Portfolio — Illustration, 3D &amp; More
+        </button>
+        <div class="embed-panel" id="illustration">
+          <div class="pdf-wrapper">
+            <iframe class="pdf-frame" id="frame-illustration" src="ArtAndIllustrationFolio.pdf" title="Art & Illustration Portfolio"></iframe>
+            <button class="fullscreen-btn" onclick="openFullscreen('frame-illustration', 'ArtAndIllustrationFolio.pdf')">⤢ Full Screen</button>
+          </div>
+        </div>
+      </li>
+
+      <li>
         <button class="portfolio-btn" onclick="toggle(this, 'game-art')">
           Game Development &amp; Game Art
         </button>
@@ -172,18 +184,6 @@
         <div class="embed-panel" id="showreel">
           <div class="video-wrap">
             <iframe src="https://www.youtube.com/embed/frCgh0a3msg" title="Show Reel" allowfullscreen></iframe>
-          </div>
-        </div>
-      </li>
-
-      <li>
-        <button class="portfolio-btn" onclick="toggle(this, 'illustration')">
-          General Portfolio — Illustration, 3D &amp; More
-        </button>
-        <div class="embed-panel" id="illustration">
-          <div class="pdf-wrapper">
-            <iframe class="pdf-frame" id="frame-illustration" src="ArtAndIllustrationFolio.pdf" title="Art & Illustration Portfolio"></iframe>
-            <button class="fullscreen-btn" onclick="openFullscreen('frame-illustration', 'ArtAndIllustrationFolio.pdf')">⤢ Full Screen</button>
           </div>
         </div>
       </li>
