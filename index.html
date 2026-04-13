@@ -35,6 +35,7 @@
     }
 
     .contact-link:hover { opacity: 0.45; }
+    .contact-link .contact-icon { display: none; }
 
     body {
       background: #f7f5f2;
@@ -188,12 +189,20 @@
       .container { padding-top: 6rem; }
       .fixed-header { padding: 1.2rem 1rem 1rem; }
       .pdf-frame { height: 55vh; }
+      .contact-link {
+        top: 1.2rem;
+        right: 1.2rem;
+        font-size: 1.4rem;
+        letter-spacing: 0;
+      }
+      .contact-link .contact-text { display: none; }
+      .contact-link .contact-icon { display: inline; }
     }
   </style>
 </head>
 <body>
 <header class="fixed-header">
-    <a class="contact-link" href="mailto:tom@tomhardingillustration.co.uk">Contact</a>
+    <a class="contact-link" href="mailto:tom@tomhardingillustration.co.uk"><span class="contact-text">Contact</span><span class="contact-icon">✉</span></a>
     <h1 class="title">Tom Harding<br>Illustration</h1>
   </header>
 
