@@ -233,29 +233,33 @@
         <button class="portfolio-btn" onclick="toggle(this, 'illustration')">
           General Portfolio — Illustration, 3D &amp; More
         </button>
-        <div class="embed-panel" id="illustration">
-          <div class="pdf-wrapper">
-            <iframe class="pdf-frame" id="frame-illustration" data-pdf="ArtAndIllustrationFolio.pdf" title="Art & Illustration Portfolio"></iframe>
-            <button class="fullscreen-btn" onclick="openFullscreen('frame-illustration', 'ArtAndIllustrationFolio.pdf')">⤢ Full Screen</button>
-          </div>
-        </div>
       </li>
 
-      <div class="dot-divider"><img src="handDrawing1.png" alt="hand drawing" style="width:10rem;height:auto;"></div>
+      <div class="dot-divider">
+        <img src="handDrawing1.png" alt="hand drawing" onclick="toggleById('illustration')" style="width:10rem;height:auto;cursor:pointer;">
+      </div>
+      <div class="embed-panel" id="illustration">
+        <div class="pdf-wrapper">
+          <iframe class="pdf-frame" id="frame-illustration" data-pdf="ArtAndIllustrationFolio.pdf" title="Art & Illustration Portfolio"></iframe>
+          <button class="fullscreen-btn" onclick="openFullscreen('frame-illustration', 'ArtAndIllustrationFolio.pdf')">⤢ Full Screen</button>
+        </div>
+      </div>
 
       <li>
         <button class="portfolio-btn" onclick="toggle(this, 'game-art')">
           Game Development &amp; Game Art (experimental)
         </button>
-        <div class="embed-panel" id="game-art">
-          <div class="pdf-wrapper">
-            <iframe class="pdf-frame" id="frame-game-art" data-pdf="GameArtFolio.pdf" title="Game Art Portfolio"></iframe>
-            <button class="fullscreen-btn" onclick="openFullscreen('frame-game-art', 'GameArtFolio.pdf')">⤢ Full Screen</button>
-          </div>
-        </div>
       </li>
 
-      <div class="dot-divider"><img src="handsgamecontroller1.png" alt="game controller" style="width:10rem;height:auto;"></div>
+      <div class="dot-divider">
+        <img src="handsgamecontroller1.png" alt="game controller" onclick="toggleById('game-art')" style="width:10rem;height:auto;cursor:pointer;">
+      </div>
+      <div class="embed-panel" id="game-art">
+        <div class="pdf-wrapper">
+          <iframe class="pdf-frame" id="frame-game-art" data-pdf="GameArtFolio.pdf" title="Game Art Portfolio"></iframe>
+          <button class="fullscreen-btn" onclick="openFullscreen('frame-game-art', 'GameArtFolio.pdf')">⤢ Full Screen</button>
+        </div>
+      </div>
 
       <li>
         <button class="portfolio-btn" onclick="toggle(this, 'showreel')">
@@ -282,6 +286,20 @@
         return 'https://docs.google.com/viewer?url=' + encodeURIComponent(baseUrl + filename) + '&embedded=true';
       }
       return filename;
+    }
+
+    function toggleById(id) {
+      const panel = document.getElementById(id);
+      const isOpen = panel.classList.contains('open');
+      document.querySelectorAll('.embed-panel').forEach(p => p.classList.remove('open'));
+      if (!isOpen) {
+        panel.classList.add('open');
+        const frame = panel.querySelector('iframe[data-pdf]');
+        if (frame && !frame.src) {
+          frame.src = getPdfSrc(frame.getAttribute('data-pdf'));
+        }
+        setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+      }
     }
 
     function toggle(btn, id) {
