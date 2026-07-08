@@ -19,13 +19,34 @@
       z-index: 100;
       background: #f7f5f2;
       text-align: center;
-      padding: 7.6rem 1.5rem 1.6rem;
-      border-bottom: 6px solid #000;
+      padding: 3.5rem 1.5rem 1.6rem;
+      --tile: 20vw;
+    }
+
+    .fixed-header::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 46px;
+      transform: translateY(50%);
+      background-image: url("WaveyLine.png");
+      background-repeat: repeat-x;
+      background-position: 0 center;
+      background-size: var(--tile) 85%;
+      animation: waveFlow 8.6s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes waveFlow {
+      from { background-position-x: 0; }
+      to   { background-position-x: calc(-1 * var(--tile)); }
     }
 
     .contact-link {
       position: absolute;
-      top: 7.6rem;
+      top: 3.5rem;
       right: 8.4rem;
       color: #000;
       text-decoration: none;
@@ -68,7 +89,7 @@
     .container {
       max-width: 820px;
       margin: 0 auto;
-      padding-top: 15rem;
+      padding-top: 10.5rem;
       opacity: 0;
       animation: fadeUp 0.9s ease forwards;
       animation-delay: 0.2s;
@@ -82,7 +103,7 @@
     .title {
       font-family: 'Libre Baskerville', serif;
       font-weight: 400;
-      font-size: clamp(1.6rem, 5vw, 3.3rem);
+      font-size: clamp(1.2rem, 3.75vw, 2.475rem);
       letter-spacing: 0.01em;
       line-height: 1.15;
       color: #000;
@@ -147,7 +168,13 @@
       padding: 0.75rem 0 1.25rem;
     }
 
-    .embed-panel.open { display: block; }
+    .embed-panel.open {
+      display: block;
+      position: relative;
+      width: min(1200px, 94vw);
+      left: 50%;
+      transform: translateX(-50%);
+    }
 
     .pdf-wrapper {
       position: relative;
@@ -208,7 +235,8 @@
     @media (max-width: 480px) {
       body { padding: 1rem 1rem 3rem; }
       .container { padding-top: 6rem; }
-      .fixed-header { padding: 1.2rem 1rem 1rem; }
+      .fixed-header { padding: 1.2rem 1rem 1rem; --tile: 33.333vw; }
+      .fixed-header::after { animation-duration: 14.3s; }
       .pdf-frame { height: 55vh; }
       .contact-link { top: 1.2rem; right: 1.2rem; font-size: 1.4rem; }
       .contact-tooltip { display: none !important; }
@@ -231,7 +259,7 @@
 
       <li>
         <button class="portfolio-btn" onclick="toggle(this, 'illustration')">
-          General Portfolio — Illustration, 3D &amp; More
+          Illustration Portfolio
         </button>
       </li>
 
@@ -288,6 +316,13 @@
       return filename;
     }
 
+    function scrollPanelBelowHeader(panel) {
+      const header = document.querySelector('.fixed-header');
+      const offset = header.offsetHeight + 12;
+      const top = panel.getBoundingClientRect().top + window.pageYOffset - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+
     function toggleById(id) {
       const panel = document.getElementById(id);
       const isOpen = panel.classList.contains('open');
@@ -298,7 +333,7 @@
         if (frame && !frame.src) {
           frame.src = getPdfSrc(frame.getAttribute('data-pdf'));
         }
-        setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+        setTimeout(() => scrollPanelBelowHeader(panel), 50);
       }
     }
 
@@ -314,7 +349,7 @@
         if (frame && !frame.src) {
           frame.src = getPdfSrc(frame.getAttribute('data-pdf'));
         }
-        setTimeout(() => btn.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+        setTimeout(() => scrollPanelBelowHeader(panel), 50);
       }
     }
 
@@ -328,6 +363,16 @@
         window.open(pdfSrc, '_blank');
       }
     }
+
+    // Click anywhere outside an open panel (and not on a toggle control) closes all panels.
+    document.addEventListener('click', function(e) {
+      if (e.target.closest('.embed-panel') ||
+          e.target.closest('.portfolio-btn') ||
+          e.target.closest('.dot-divider')) {
+        return;
+      }
+      document.querySelectorAll('.embed-panel').forEach(p => p.classList.remove('open'));
+    });
   </script>
 </body>
 </html>
