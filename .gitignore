@@ -2,8 +2,10 @@
 handDrawing1.png
 handsgamecontroller1.png
 
-# Editor backup files
+# Editor backup / working files
 *~
+*.kra
+*-autosave.kra
 
 # Favicon source art — kept locally; only favicon.png is used
 large favicon.png
