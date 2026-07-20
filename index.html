@@ -67,6 +67,14 @@
       animation-delay: 6s;
     }
 
+    /* Only the boat itself is clickable; the wrapper stays click-through */
+    .wave-boat a {
+      display: block;
+      width: 100%;
+      pointer-events: auto;
+      cursor: pointer;
+    }
+
     .wave-boat img {
       display: block;
       width: 100%;
@@ -297,7 +305,7 @@
       <span class="contact-tooltip">tom@tomhardingillustration.co.uk</span>
     </a>
     <h1 class="title">Tom Harding<br>Art &amp; Illustration</h1>
-    <div class="wave-boat" aria-hidden="true"><img src="boat.png" alt=""></div>
+    <div class="wave-boat"><a href="boatimage20072026.jpeg" target="_blank" rel="noopener" aria-label="Open drawing"><img src="boat.png" alt=""></a></div>
   </header>
 
   <div class="container">
