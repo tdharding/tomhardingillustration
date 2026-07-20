@@ -31,7 +31,7 @@
       background: #f7f5f2;
       text-align: center;
       padding: 3.5rem 1.5rem 1.9rem;
-      --tile: 20vw;
+      --tile: 320px;
     }
 
     .fixed-header::after {
@@ -40,12 +40,12 @@
       left: 0;
       right: 0;
       bottom: 0;
-      height: 46px;
+      height: calc(var(--tile) / 10);
       transform: translateY(50%);
       background-image: url("WaveyLine.png");
       background-repeat: repeat-x;
       background-position: 0 center;
-      background-size: var(--tile) 85%;
+      background-size: var(--tile) 100%;
       animation: waveFlow 8.6s linear infinite;
       pointer-events: none;
     }
@@ -60,7 +60,7 @@
       position: absolute;
       bottom: -16px;
       left: 100%;
-      width: 78px;
+      width: 51px;
       pointer-events: none;
       z-index: 1;
       animation: boatSail 120s linear infinite;
@@ -75,10 +75,10 @@
       animation: boatRock 4s ease-in-out infinite;
     }
 
-    /* Travel: crosses the screen in 20s, then rests off-screen for the rest of the cycle */
+    /* Travel: crosses the screen in 40s, then rests off-screen for the rest of the cycle */
     @keyframes boatSail {
       0%    { transform: translateX(0); }
-      16.7% { transform: translateX(calc(-100vw - 96px)); }
+      33.3% { transform: translateX(calc(-100vw - 96px)); }
       100%  { transform: translateX(calc(-100vw - 96px)); }
     }
 
@@ -283,8 +283,7 @@
     @media (max-width: 480px) {
       body { padding: 1rem 1rem 3rem; }
       .container { padding-top: 6rem; }
-      .fixed-header { padding: 1.2rem 1rem 1rem; --tile: 33.333vw; }
-      .fixed-header::after { animation-duration: 14.3s; background-size: var(--tile) 42.5%; }
+      .fixed-header { padding: 1.2rem 1rem 1rem; }
       .pdf-frame { height: 55vh; }
       .contact-link { top: 1.2rem; right: 1.2rem; font-size: 1.4rem; }
       .contact-tooltip { display: none !important; }
