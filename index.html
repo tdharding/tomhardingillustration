@@ -16,7 +16,6 @@
   <title>Tom Harding Illustration</title>
   <link rel="icon" type="image/png" href="favicon.png">
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400&family=Source+Sans+3:wght@300;400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -110,23 +109,12 @@
     }
 
     .contact-link:hover { opacity: 0.45; }
-    .contact-link .contact-icon { display: none; }
 
-    .contact-tooltip {
-      display: none;
-      position: absolute;
-      top: 100%;
-      right: 0;
-      margin-top: 0.4rem;
-      font-family: 'Libre Baskerville', serif;
-      font-size: 0.75rem;
-      letter-spacing: 0.04em;
-      color: #000;
-      white-space: nowrap;
-      opacity: 0.55;
+    .contact-link img {
+      display: block;
+      width: 30px;
+      height: auto;
     }
-
-    .contact-link:hover .contact-tooltip { display: block; }
 
     body {
       background: #f7f5f2;
@@ -293,16 +281,14 @@
       .container { padding-top: 6rem; }
       .fixed-header { padding: 1.2rem 1rem 1rem; }
       .pdf-frame { height: 55vh; }
-      .contact-link { top: 1.2rem; right: 1.2rem; font-size: 1.4rem; }
-      .contact-tooltip { display: none !important; }
+      .contact-link { top: 1.2rem; right: 1.2rem; }
     }
   </style>
 </head>
 <body>
 <header class="fixed-header">
     <a class="contact-link" href="mailto:tom@tomhardingillustration.co.uk">
-      <i class="fa-regular fa-envelope"></i>
-      <span class="contact-tooltip">tom@tomhardingillustration.co.uk</span>
+      <img src="MailImage1.png" alt="Email Tom Harding">
     </a>
     <h1 class="title">Tom Harding<br>Art &amp; Illustration</h1>
     <div class="wave-boat"><a href="boatimage20072026.jpeg" target="_blank" rel="noopener" aria-label="Open drawing"><img src="boat.png" alt=""></a></div>
