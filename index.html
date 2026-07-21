@@ -178,9 +178,28 @@
       100% { transform: scaleX(-1); }
     }
 
-    /* Margins disappear on smaller screens - hide the fish rather than overlap the column */
+    /* Below ~1320px there are no side margins, so anchor the lanes to the
+       viewport edges instead of the column, with shorter paths. Lane width is
+       set to the exact path extent (path width + fish width) so the fish can
+       never swim past the screen edge. */
     @media (max-width: 1320px) {
-      .fish-lane { display: none; }
+      .fish-lane { width: 161px; height: 90px; }
+
+      .fish-lane--left   { left: 2vw;  right: auto; top: 30vh; }
+      .fish-lane--right  { left: auto; right: 2vw;  top: 48vh; }
+      .fish-lane--right2 { left: auto; right: 2vw;  top: 66vh; }
+
+      .soul-fish { width: 26px; }
+
+      .fish-lane--left .soul-fish {
+        offset-path: path("M 0,45 C 30,12 60,78 90,45 C 108,28 122,58 135,45");
+      }
+      .fish-lane--right .soul-fish {
+        offset-path: path("M 135,40 C 105,7 75,73 45,40 C 27,22 13,52 0,40");
+      }
+      .fish-lane--right2 .soul-fish {
+        offset-path: path("M 135,40 C 100,70 65,10 35,45 C 22,58 10,25 0,40");
+      }
     }
 
     .contact-link {
