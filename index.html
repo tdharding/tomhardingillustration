@@ -105,8 +105,9 @@
       pointer-events: none;
     }
 
-    .fish-lane--left  { left: calc(50% - 410px - 250px); top: 42vh; }
-    .fish-lane--right { left: calc(50% + 410px + 20px);  top: 34vh; }
+    .fish-lane--left   { left: calc(50% - 410px - 250px); top: 42vh; }
+    .fish-lane--right  { left: calc(50% + 410px + 20px);  top: 34vh; }
+    .fish-lane--right2 { left: calc(50% + 410px + 40px);  top: 58vh; }
 
     .soul-fish {
       position: absolute;
@@ -145,6 +146,16 @@
     .fish-lane--right .soul-fish img {
       animation-duration: 60.8s;
       animation-delay: -25s;
+    }
+
+    .fish-lane--right2 .soul-fish {
+      offset-path: path("M 185,40 C 140,75 95,10 55,45 C 30,65 15,25 0,40");
+      animation-duration: 34s;
+      animation-delay: -8s;
+    }
+    .fish-lane--right2 .soul-fish img {
+      animation-duration: 68s;
+      animation-delay: -8s;
     }
 
     @keyframes fishSwim {
@@ -436,6 +447,11 @@
   </div>
   <div class="fish-lane fish-lane--right">
     <a class="soul-fish" href="https://www.youtube.com/shorts/GI1-x4V5DaE" target="_blank" rel="noopener" aria-label="Soul fish video">
+      <img src="SoulFishSwimming.png" alt="">
+    </a>
+  </div>
+  <div class="fish-lane fish-lane--right2">
+    <a class="soul-fish" href="https://www.youtube.com/shorts/NLju3teaDxk" target="_blank" rel="noopener" aria-label="Soul fish video">
       <img src="SoulFishSwimming.png" alt="">
     </a>
   </div>
