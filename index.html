@@ -99,14 +99,14 @@
        Each lane is the containing block, so the motion path resolves inside it. */
     .fish-lane {
       position: absolute;
-      width: 170px;
-      height: 360px;
+      width: 230px;
+      height: 110px;
       z-index: 0;
       pointer-events: none;
     }
 
-    .fish-lane--left  { left: calc(50% - 410px - 190px); top: 20vh; }
-    .fish-lane--right { left: calc(50% + 410px + 20px);  top: 13vh; }
+    .fish-lane--left  { left: calc(50% - 410px - 250px); top: 42vh; }
+    .fish-lane--right { left: calc(50% + 410px + 20px);  top: 34vh; }
 
     .soul-fish {
       position: absolute;
@@ -114,42 +114,51 @@
       left: 0;
       width: 32px;
       offset-rotate: 0deg;          /* stay upright; don't tumble along the curve */
-      pointer-events: auto;
-      cursor: pointer;
+      pointer-events: none;
       animation: fishSwim 46s ease-in-out infinite alternate;
+      animation-delay: -14s;        /* stagger where each fish starts */
     }
+
+    /* Only the linked fish is interactive */
+    a.soul-fish { pointer-events: auto; cursor: pointer; }
 
     .soul-fish img {
       display: block;
       width: 100%;
       height: auto;
-      animation: fishFlip 92s linear infinite;
+      /* steps(1) snaps the flip instantly instead of easing through it */
+      animation: fishFlip 92s steps(1, end) infinite;
+      animation-delay: -14s;
     }
 
     .fish-lane--left .soul-fish {
-      offset-path: path("M 20,10 C 110,70 0,130 60,190 C 120,250 10,300 50,345");
+      offset-path: path("M 0,50 C 50,10 90,90 140,50 C 165,30 180,65 195,50");
     }
 
     .fish-lane--right .soul-fish {
-      offset-path: path("M 100,10 C 20,70 130,140 50,200 C 0,255 100,305 60,350");
+      offset-path: path("M 195,45 C 145,5 105,85 55,45 C 30,25 15,60 0,45");
       animation-duration: 38s;
+      animation-delay: -25s;
     }
-    .fish-lane--right .soul-fish img { animation-duration: 76s; }
+    .fish-lane--right .soul-fish img {
+      animation-duration: 76s;
+      animation-delay: -25s;
+    }
 
     @keyframes fishSwim {
       from { offset-distance: 0%; }
       to   { offset-distance: 100%; }
     }
 
-    /* Hold orientation, then flip quickly at each turnaround */
+    /* Instant flip at each turnaround */
     @keyframes fishFlip {
-      0%, 49%  { transform: scaleX(1); }
-      50%, 99% { transform: scaleX(-1); }
-      100%     { transform: scaleX(1); }
+      0%   { transform: scaleX(1); }
+      50%  { transform: scaleX(-1); }
+      100% { transform: scaleX(1); }
     }
 
     /* Margins disappear on smaller screens - hide the fish rather than overlap the column */
-    @media (max-width: 1150px) {
+    @media (max-width: 1320px) {
       .fish-lane { display: none; }
     }
 
@@ -170,7 +179,7 @@
 
     .contact-link img {
       display: block;
-      width: 75px;
+      width: 94px;
       height: auto;
     }
 
@@ -416,9 +425,9 @@
     </a>
   </div>
   <div class="fish-lane fish-lane--right">
-    <a class="soul-fish" href="https://www.youtube.com/watch?v=3yz73QUttMU" target="_blank" rel="noopener" aria-label="Soul fish video">
+    <div class="soul-fish" aria-hidden="true">
       <img src="SoulFishSwimming.png" alt="">
-    </a>
+    </div>
   </div>
 
   <script>
