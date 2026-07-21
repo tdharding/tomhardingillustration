@@ -95,6 +95,64 @@
       50%      { transform: rotate(17.5deg); }
     }
 
+    /* Soul fish: swim winding routes in the margins either side of the column.
+       Each lane is the containing block, so the motion path resolves inside it. */
+    .fish-lane {
+      position: absolute;
+      width: 170px;
+      height: 360px;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .fish-lane--left  { left: calc(50% - 410px - 190px); top: 20vh; }
+    .fish-lane--right { left: calc(50% + 410px + 20px);  top: 13vh; }
+
+    .soul-fish {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 32px;
+      offset-rotate: 0deg;          /* stay upright; don't tumble along the curve */
+      pointer-events: auto;
+      cursor: pointer;
+      animation: fishSwim 46s ease-in-out infinite alternate;
+    }
+
+    .soul-fish img {
+      display: block;
+      width: 100%;
+      height: auto;
+      animation: fishFlip 92s linear infinite;
+    }
+
+    .fish-lane--left .soul-fish {
+      offset-path: path("M 20,10 C 110,70 0,130 60,190 C 120,250 10,300 50,345");
+    }
+
+    .fish-lane--right .soul-fish {
+      offset-path: path("M 100,10 C 20,70 130,140 50,200 C 0,255 100,305 60,350");
+      animation-duration: 38s;
+    }
+    .fish-lane--right .soul-fish img { animation-duration: 76s; }
+
+    @keyframes fishSwim {
+      from { offset-distance: 0%; }
+      to   { offset-distance: 100%; }
+    }
+
+    /* Hold orientation, then flip quickly at each turnaround */
+    @keyframes fishFlip {
+      0%, 49%  { transform: scaleX(1); }
+      50%, 99% { transform: scaleX(-1); }
+      100%     { transform: scaleX(1); }
+    }
+
+    /* Margins disappear on smaller screens - hide the fish rather than overlap the column */
+    @media (max-width: 1150px) {
+      .fish-lane { display: none; }
+    }
+
     .contact-link {
       position: absolute;
       top: 3.5rem;
@@ -112,7 +170,7 @@
 
     .contact-link img {
       display: block;
-      width: 30px;
+      width: 75px;
       height: auto;
     }
 
@@ -218,6 +276,8 @@
       width: min(1200px, 94vw);
       left: 50%;
       transform: translateX(-50%);
+      z-index: 5;                 /* sit above the swimming fish when expanded */
+      background: #f7f5f2;
     }
 
     .pdf-wrapper {
@@ -348,6 +408,17 @@
     </ul>
 
     <footer>© 2026 Tom Harding</footer>
+  </div>
+
+  <div class="fish-lane fish-lane--left">
+    <a class="soul-fish" href="https://www.youtube.com/watch?v=3yz73QUttMU" target="_blank" rel="noopener" aria-label="Soul fish video">
+      <img src="SoulFishSwimming.png" alt="">
+    </a>
+  </div>
+  <div class="fish-lane fish-lane--right">
+    <a class="soul-fish" href="https://www.youtube.com/watch?v=3yz73QUttMU" target="_blank" rel="noopener" aria-label="Soul fish video">
+      <img src="SoulFishSwimming.png" alt="">
+    </a>
   </div>
 
   <script>
