@@ -27,11 +27,10 @@
       left: 0;
       right: 0;
       z-index: 100;
-      background: #f7f5f2;
+      background: transparent;   /* let the wavy water edge define the boundary */
       text-align: center;
       padding: 3.5rem 1.5rem 1.9rem;
       --tile: 320px;
-      transition: background-color 0.35s ease;
     }
 
     .fixed-header::after {
@@ -252,7 +251,8 @@
       background-color: #d5d0c7;
       background-image: url("gridbg.png");
       background-repeat: repeat;
-      --waterline: 160px;
+      background-size: 148px 148px;
+      --waterline: 150px;
       -webkit-mask-image: url("UnderWavesMaskImg.png"), linear-gradient(#000, #000);
       mask-image: url("UnderWavesMaskImg.png"), linear-gradient(#000, #000);
       -webkit-mask-size: 320px 32px, 100% 300vh;
@@ -310,8 +310,8 @@
 
     .pbox {
       position: absolute;
-      width: 208px;
-      height: 146px;
+      width: 168px;
+      height: 156px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -344,7 +344,7 @@
 
     .pbox-icon {
       display: block;
-      width: 84px;
+      width: 104px;
       height: auto;
       pointer-events: none;
       transition: width .6s cubic-bezier(.6,.05,.25,1);
@@ -367,14 +367,15 @@
 
     /* ---- Open state: boxes tighten to icons and dock left, viewer opens ---- */
     .container.is-open .pbox {
-      width: 88px;
-      height: 74px;
+      width: 104px;
+      height: 92px;
       gap: 0;
       animation: none;
       transform: none;
     }
-    .container.is-open .pbox-title { opacity: 0; }
-    .container.is-open .pbox-icon { width: 54px; }
+    /* Collapse the title out of flow so the icon centres */
+    .container.is-open .pbox-title { opacity: 0; height: 0; margin: 0; overflow: hidden; }
+    .container.is-open .pbox-icon { width: 90px; }
 
     .container.is-open .pbox--illustration  { left: 0; top: 2%; }
     .container.is-open .pbox--experimental  { left: 0; top: 21%; }
