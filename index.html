@@ -240,12 +240,10 @@
     body.panel-open .fixed-header { background: #d5d0c7; }
 
     .container {
-      max-width: 820px;
+      position: relative;
+      max-width: 1120px;
       margin: 0 auto;
       min-height: calc(100vh - 3.5rem);
-      display: flex;
-      flex-direction: column;
-      justify-content: safe center;
       padding-top: 11.5rem;
       opacity: 0;
       animation: fadeUp 0.9s ease forwards;
@@ -266,74 +264,130 @@
       color: #000;
     }
 
-    .spacer {
-      margin-top: 0.44rem;
+    /* ---- Floating portfolio boxes ---- */
+    .pboxes {
+      position: relative;
+      height: 64vh;
+      max-height: 600px;
     }
 
-    .dot-divider {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 0.8rem;
-      padding: 0.7rem 0;
-      font-size: 1.8rem;
-    }
-
-    .dot-divider span {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #000;
-      display: block;
-    }
-
-    .portfolio {
-      list-style: none;
+    .pbox {
+      position: absolute;
+      width: 208px;
+      height: 146px;
       display: flex;
       flex-direction: column;
-      gap: 0.44rem;
-    }
-
-    .portfolio li {
-      opacity: 0;
-      animation: fadeUp 0.7s ease forwards;
-    }
-    .portfolio li:nth-child(1) { animation-delay: 0.5s; }
-    .portfolio li:nth-child(2) { animation-delay: 0.65s; }
-    .portfolio li:nth-child(3) { animation-delay: 0.8s; }
-
-    .portfolio-btn {
-      display: block;
-      width: 100%;
-      padding: 1.2rem 0;
-      background: none;
-      border: none;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.8rem;
+      background: #f7f5f2;
+      border: 1.5px solid #1a1a1a;
+      border-radius: 7px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.10);
       cursor: pointer;
       color: #000;
       font-family: 'Libre Baskerville', serif;
-      font-size: clamp(0.9rem, 2.5vw, 1.5rem);
-      font-weight: 400;
-      letter-spacing: 0.04em;
+      z-index: 3;
+      animation: floatBox 6s ease-in-out infinite;
+      transition: left .6s cubic-bezier(.6,.05,.25,1),
+                  top .6s cubic-bezier(.6,.05,.25,1),
+                  width .6s cubic-bezier(.6,.05,.25,1),
+                  height .6s cubic-bezier(.6,.05,.25,1),
+                  box-shadow .3s ease, border-color .3s ease;
+    }
+
+    .pbox:hover { box-shadow: 0 12px 28px rgba(0,0,0,0.18); }
+
+    .pbox-title {
+      font-size: 1rem;
+      letter-spacing: 0.01em;
       text-align: center;
-      transition: opacity 0.2s ease;
+      transition: opacity .3s ease;
+      pointer-events: none;
     }
 
-    .portfolio-btn:hover { opacity: 0.55; }
-
-    .embed-panel {
-      display: none;
-      padding: 0.75rem 0 1.25rem;
-    }
-
-    .embed-panel.open {
+    .pbox-icon {
       display: block;
-      position: relative;
-      width: min(1200px, 94vw);
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 5;                 /* sit above the swimming fish when expanded */
-      background: #f7f5f2;
+      width: 84px;
+      height: auto;
+      pointer-events: none;
+      transition: width .6s cubic-bezier(.6,.05,.25,1);
     }
+
+    /* Resting scattered positions */
+    .pbox--illustration  { left: 6%;  top: 34%; }
+    .pbox--experimental  { left: 35%; top: 6%; }
+    .pbox--storyboarding { left: 63%; top: 30%; }
+    .pbox--showreel      { left: 26%; top: 64%; }
+
+    .pbox:nth-of-type(2) { animation-delay: -1.5s; }
+    .pbox:nth-of-type(3) { animation-delay: -3s; }
+    .pbox:nth-of-type(4) { animation-delay: -4.5s; }
+
+    @keyframes floatBox {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-8px); }
+    }
+
+    /* ---- Open state: boxes tighten to icons and dock left, viewer opens ---- */
+    .container.is-open .pbox {
+      width: 88px;
+      height: 74px;
+      gap: 0;
+      animation: none;
+      transform: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+    .container.is-open .pbox-title { opacity: 0; }
+    .container.is-open .pbox-icon { width: 54px; }
+
+    .container.is-open .pbox--illustration  { left: 0; top: 2%; }
+    .container.is-open .pbox--experimental  { left: 0; top: 21%; }
+    .container.is-open .pbox--storyboarding { left: 0; top: 40%; }
+    .container.is-open .pbox--showreel      { left: 0; top: 59%; }
+
+    .pbox.is-active { border-color: #000; box-shadow: 0 0 0 2px #000, 0 6px 16px rgba(0,0,0,0.2); }
+
+    /* ---- Viewer panel ---- */
+    .viewer {
+      position: absolute;
+      top: 2%;
+      left: 112px;
+      right: 0;
+      height: calc(64vh - 20px);
+      max-height: 560px;
+      background: #f7f5f2;
+      border: 1.5px solid #1a1a1a;
+      border-radius: 7px;
+      box-shadow: 0 16px 44px rgba(0,0,0,0.18);
+      overflow: hidden;
+      opacity: 0;
+      transform: scale(0.98);
+      pointer-events: none;
+      transition: opacity .4s ease, transform .4s ease;
+      z-index: 6;
+    }
+    .container.is-open .viewer {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+    }
+
+    .viewer-close {
+      position: absolute;
+      top: 6px;
+      right: 14px;
+      font-size: 1.5rem;
+      line-height: 1;
+      color: #000;
+      z-index: 2;
+      pointer-events: none;   /* decorative only; closing is via click-outside */
+    }
+
+    .viewer-body { width: 100%; height: 100%; }
+    .viewer-body .pdf-frame { width: 100%; height: 100%; border: none; border-radius: 0; }
+    .viewer-body .video-wrap { position: absolute; inset: 0; height: 100%; padding: 0; border: none; border-radius: 0; }
 
     .pdf-wrapper {
       position: relative;
@@ -391,11 +445,54 @@
       text-transform: uppercase;
     }
 
+    /* Tablet / phone: scattered boxes don't fit, so stack them */
+    @media (max-width: 900px) {
+      .container { padding-top: 9rem; }
+      .pboxes {
+        position: relative;
+        height: auto;
+        max-height: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        padding-bottom: 2.5rem;
+      }
+      .pbox {
+        position: static;
+        width: min(340px, 86vw);
+        height: auto;
+        padding: 1rem;
+        animation: none;
+        transform: none;
+      }
+      .pbox-icon { width: 76px; }
+
+      /* Open: icons become a wrapping row of tabs, viewer is a fixed overlay */
+      .container.is-open .pboxes {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.6rem;
+      }
+      .container.is-open .pbox { width: 72px; height: 60px; }
+      .container.is-open .pbox-icon { width: 46px; }
+
+      .viewer {
+        position: fixed;
+        left: 4vw;
+        right: 4vw;
+        top: 23vh;
+        bottom: 3vh;
+        height: auto;
+        max-height: none;
+        z-index: 60;
+      }
+    }
+
     @media (max-width: 480px) {
       body { padding: 1rem 1rem 3rem; }
-      .container { padding-top: 6rem; }
       .fixed-header { padding: 1.2rem 1rem 1rem; }
-      .pdf-frame { height: 55vh; }
       .contact-link { top: 1.2rem; right: 1.2rem; }
       .contact-link img { width: 52px; }
     }
@@ -410,58 +507,35 @@
     <div class="wave-boat"><a href="boatimage20072026.jpeg" target="_blank" rel="noopener" aria-label="Open drawing"><img src="boat.png" alt=""></a></div>
   </header>
 
-  <div class="container">
-    <div class="spacer"></div>
+  <div class="container" id="stage">
+    <div class="pboxes">
 
-    <ul class="portfolio">
+      <button class="pbox pbox--illustration" data-id="illustration">
+        <span class="pbox-title">Illustration Portfolio</span>
+        <img class="pbox-icon" src="handDrawing1v2.png" alt="">
+      </button>
 
-      <li>
-        <button class="portfolio-btn" onclick="toggle(this, 'illustration')">
-          Illustration Portfolio
-        </button>
-      </li>
+      <button class="pbox pbox--experimental" data-id="experimental">
+        <span class="pbox-title">Experimental Portfolio</span>
+        <img class="pbox-icon" src="experimentallogov2.png" alt="">
+      </button>
 
-      <div class="dot-divider">
-        <img src="handDrawing1v2.png" alt="hand drawing" onclick="toggleById('illustration')" style="width:10rem;height:auto;cursor:pointer;">
-      </div>
-      <div class="embed-panel" id="illustration">
-        <div class="pdf-wrapper">
-          <iframe class="pdf-frame" id="frame-illustration" data-pdf="ArtAndIllustrationFolio.pdf" title="Art & Illustration Portfolio"></iframe>
-          <button class="fullscreen-btn" onclick="openFullscreen('frame-illustration', 'ArtAndIllustrationFolio.pdf')">⤢ Full Screen</button>
-        </div>
-      </div>
+      <button class="pbox pbox--storyboarding" data-id="storyboarding">
+        <span class="pbox-title">Storyboarding Portfolio</span>
+        <img class="pbox-icon" src="handDrawing1v2.png" alt="">
+      </button>
 
-      <li>
-        <button class="portfolio-btn" onclick="toggle(this, 'game-art')">
-          Experimental Portfolio
-        </button>
-      </li>
+      <button class="pbox pbox--showreel" data-id="showreel">
+        <span class="pbox-title">Game Art Show Reel</span>
+        <img class="pbox-icon" src="handsgamecontroller1v2.png" alt="">
+      </button>
 
-      <div class="dot-divider">
-        <img src="experimentallogov2.png" alt="experimental logo" onclick="toggleById('game-art')" style="width:8.7rem;height:auto;cursor:pointer;">
-      </div>
-      <div class="embed-panel" id="game-art">
-        <div class="pdf-wrapper">
-          <iframe class="pdf-frame" id="frame-game-art" data-pdf="ExperimentalFolio1.pdf" title="Experimental Portfolio"></iframe>
-          <button class="fullscreen-btn" onclick="openFullscreen('frame-game-art', 'ExperimentalFolio1.pdf')">⤢ Full Screen</button>
-        </div>
-      </div>
+      <section class="viewer" aria-label="Portfolio viewer">
+        <span class="viewer-close" aria-hidden="true">✕</span>
+        <div class="viewer-body"></div>
+      </section>
 
-      <li>
-        <button class="portfolio-btn" onclick="toggle(this, 'showreel')">
-          Game Art Show Reel
-        </button>
-        <div class="dot-divider">
-          <img src="handsgamecontroller1v2.png" alt="game controller" onclick="toggleById('showreel')" style="width:8.7rem;height:auto;cursor:pointer;">
-        </div>
-        <div class="embed-panel" id="showreel">
-          <div class="video-wrap">
-            <iframe src="https://www.youtube.com/embed/frCgh0a3msg" title="Show Reel" allowfullscreen></iframe>
-          </div>
-        </div>
-      </li>
-
-    </ul>
+    </div>
 
     <footer>© 2026 Tom Harding</footer>
   </div>
@@ -486,6 +560,16 @@
     const isMobile = window.innerWidth <= 768;
     const baseUrl = window.location.href.replace(/\/[^/]*$/, '/');
 
+    const SECTIONS = {
+      illustration:  { type: 'pdf',   file: 'ArtAndIllustrationFolio.pdf', title: 'Art & Illustration Portfolio' },
+      experimental:  { type: 'pdf',   file: 'ExperimentalFolio1.pdf',      title: 'Experimental Portfolio' },
+      storyboarding: { type: 'pdf',   file: 'StoryboardFolio.pdf',         title: 'Storyboarding Portfolio' },
+      showreel:      { type: 'video', file: 'https://www.youtube.com/embed/frCgh0a3msg', title: 'Game Art Show Reel' }
+    };
+
+    const stage = document.getElementById('stage');
+    const viewerBody = document.querySelector('.viewer-body');
+
     function getPdfSrc(filename) {
       if (isMobile) {
         return 'https://docs.google.com/viewer?url=' + encodeURIComponent(baseUrl + filename) + '&embedded=true';
@@ -493,76 +577,51 @@
       return filename;
     }
 
-    function scrollPanelBelowHeader(panel) {
-      const header = document.querySelector('.fixed-header');
-      const offset = header.offsetHeight + 12;
-      const top = panel.getBoundingClientRect().top + window.pageYOffset - offset;
-      window.scrollTo({ top, behavior: 'smooth' });
-    }
-
-    function toggleById(id) {
-      const panel = document.getElementById(id);
-      const isOpen = panel.classList.contains('open');
-      document.querySelectorAll('.embed-panel').forEach(p => p.classList.remove('open'));
-      if (!isOpen) {
-        panel.classList.add('open');
-        const frame = panel.querySelector('iframe[data-pdf]');
-        if (frame && !frame.src) {
-          frame.src = getPdfSrc(frame.getAttribute('data-pdf'));
-        }
-        setTimeout(() => scrollPanelBelowHeader(panel), 50);
-      }
-    }
-
-    function toggle(btn, id) {
-      const panel = document.getElementById(id);
-      const isOpen = panel.classList.contains('open');
-
-      document.querySelectorAll('.embed-panel').forEach(p => p.classList.remove('open'));
-
-      if (!isOpen) {
-        panel.classList.add('open');
-        const frame = panel.querySelector('iframe[data-pdf]');
-        if (frame && !frame.src) {
-          frame.src = getPdfSrc(frame.getAttribute('data-pdf'));
-        }
-        setTimeout(() => scrollPanelBelowHeader(panel), 50);
-      }
-    }
-
-    function openFullscreen(frameId, pdfSrc) {
-      const frame = document.getElementById(frameId);
-      if (frame.requestFullscreen) {
-        frame.requestFullscreen();
-      } else if (frame.webkitRequestFullscreen) {
-        frame.webkitRequestFullscreen();
+    function loadViewer(id) {
+      const s = SECTIONS[id];
+      if (!s) return;
+      if (s.type === 'pdf') {
+        viewerBody.innerHTML =
+          '<iframe class="pdf-frame" src="' + getPdfSrc(s.file) + '" title="' + s.title + '"></iframe>';
       } else {
-        window.open(pdfSrc, '_blank');
+        viewerBody.innerHTML =
+          '<div class="video-wrap"><iframe src="' + s.file + '" title="' + s.title + '" allowfullscreen></iframe></div>';
       }
     }
 
-    // Click anywhere outside an open panel (and not on a toggle control) closes all panels.
-    document.addEventListener('click', function(e) {
-      if (e.target.closest('.embed-panel') ||
-          e.target.closest('.portfolio-btn') ||
-          e.target.closest('.dot-divider')) {
-        return;
-      }
-      document.querySelectorAll('.embed-panel').forEach(p => p.classList.remove('open'));
+    function openSection(id) {
+      if (!SECTIONS[id]) return;
+      loadViewer(id);
+      stage.classList.add('is-open');
+      document.body.classList.add('panel-open');
+      document.querySelectorAll('.pbox').forEach(b =>
+        b.classList.toggle('is-active', b.dataset.id === id));
+    }
+
+    function closeViewer() {
+      stage.classList.remove('is-open');
+      document.body.classList.remove('panel-open');
+      document.querySelectorAll('.pbox').forEach(b => b.classList.remove('is-active'));
+      // clear content (stops the video) once the close animation has played
+      setTimeout(() => { if (!stage.classList.contains('is-open')) viewerBody.innerHTML = ''; }, 450);
+    }
+
+    // A box opens (or, while open, switches to) its section
+    document.querySelectorAll('.pbox').forEach(box => {
+      box.addEventListener('click', () => openSection(box.dataset.id));
     });
 
-    // Dim the page whenever any panel is open. Watching the panels themselves
-    // covers every open/close path (buttons, dot-divider images, click-outside).
-    (function () {
-      const panels = document.querySelectorAll('.embed-panel');
-      const sync = () => document.body.classList.toggle(
-        'panel-open',
-        !!document.querySelector('.embed-panel.open')
-      );
-      const observer = new MutationObserver(sync);
-      panels.forEach(p => observer.observe(p, { attributes: true, attributeFilter: ['class'] }));
-      sync();
-    })();
+    // Click anywhere outside the viewer/boxes (and not on a link) closes it.
+    // The X is decorative; this is what actually closes.
+    document.addEventListener('click', function (e) {
+      if (!stage.classList.contains('is-open')) return;
+      if (e.target.closest('.viewer') ||
+          e.target.closest('.pbox') ||
+          e.target.closest('a')) {
+        return;
+      }
+      closeViewer();
+    });
   </script>
 </body>
 </html>
