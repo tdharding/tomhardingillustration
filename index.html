@@ -102,9 +102,15 @@
       position: absolute;
       width: 230px;
       height: 110px;
-      z-index: 0;
+      z-index: 1;
       pointer-events: none;
+      transition: transform 0.9s ease, opacity 0.9s ease;
     }
+
+    /* When the viewer is open the fish disperse off-screen, and return on close */
+    body.panel-open .fish-lane--left  { transform: translateX(-75vw); opacity: 0; }
+    body.panel-open .fish-lane--right,
+    body.panel-open .fish-lane--right2 { transform: translateX(75vw); opacity: 0; }
 
     .fish-lane--left   { left: calc(50% - 410px - 250px); top: 42vh; }
     .fish-lane--right  { left: calc(50% + 410px + 20px);  top: 34vh; }
@@ -207,6 +213,7 @@
       position: absolute;
       top: 3.5rem;
       right: 8.4rem;
+      z-index: 1;                 /* mail hand in front of the wave */
       color: #000;
       text-decoration: none;
       transition: opacity 0.2s ease;
@@ -235,9 +242,39 @@
       transition: background-color 0.35s ease;
     }
 
-    /* Dim the page while a PDF / video panel is open */
-    body.panel-open { background: #d5d0c7; }
-    body.panel-open .fixed-header { background: #d5d0c7; }
+    /* Permanent "water": darker shade + repeating grid, always present below the
+       wavy line. Masked to a wavy top edge; the opaque header covers the rest. */
+    .water {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-color: #d5d0c7;
+      background-image: url("gridbg.png");
+      background-repeat: repeat;
+      --waterline: 160px;
+      -webkit-mask-image: url("UnderWavesMaskImg.png"), linear-gradient(#000, #000);
+      mask-image: url("UnderWavesMaskImg.png"), linear-gradient(#000, #000);
+      -webkit-mask-size: 320px 32px, 100% 300vh;
+      mask-size: 320px 32px, 100% 300vh;
+      -webkit-mask-repeat: repeat-x, no-repeat;
+      mask-repeat: repeat-x, no-repeat;
+      -webkit-mask-position: 0 var(--waterline), 0 calc(var(--waterline) + 30px);
+      mask-position: 0 var(--waterline), 0 calc(var(--waterline) + 30px);
+      /* Scroll the wavy edge one tile in sync with the wave line (same 320px / 8.6s) */
+      animation: waterFlow 8.6s linear infinite;
+    }
+
+    @keyframes waterFlow {
+      from {
+        -webkit-mask-position: 0 var(--waterline), 0 calc(var(--waterline) + 30px);
+        mask-position: 0 var(--waterline), 0 calc(var(--waterline) + 30px);
+      }
+      to {
+        -webkit-mask-position: -320px var(--waterline), 0 calc(var(--waterline) + 30px);
+        mask-position: -320px var(--waterline), 0 calc(var(--waterline) + 30px);
+      }
+    }
 
     .container {
       position: relative;
@@ -283,8 +320,6 @@
       padding: 0.8rem;
       background: #f7f5f2;
       border: 1.5px solid #1a1a1a;
-      border-radius: 7px;
-      box-shadow: 0 10px 24px rgba(0,0,0,0.10);
       cursor: pointer;
       color: #000;
       font-family: 'Libre Baskerville', serif;
@@ -297,7 +332,7 @@
                   box-shadow .3s ease, border-color .3s ease;
     }
 
-    .pbox:hover { box-shadow: 0 12px 28px rgba(0,0,0,0.18); }
+    .pbox:hover { background: #efece6; }
 
     .pbox-title {
       font-size: 1rem;
@@ -337,7 +372,6 @@
       gap: 0;
       animation: none;
       transform: none;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
     }
     .container.is-open .pbox-title { opacity: 0; }
     .container.is-open .pbox-icon { width: 54px; }
@@ -347,7 +381,7 @@
     .container.is-open .pbox--storyboarding { left: 0; top: 40%; }
     .container.is-open .pbox--showreel      { left: 0; top: 59%; }
 
-    .pbox.is-active { border-color: #000; box-shadow: 0 0 0 2px #000, 0 6px 16px rgba(0,0,0,0.2); }
+    .pbox.is-active { background: #e7e3db; }
 
     /* ---- Viewer panel ---- */
     .viewer {
@@ -359,14 +393,11 @@
       max-height: 560px;
       background: #f7f5f2;
       border: 1.5px solid #1a1a1a;
-      border-radius: 7px;
-      box-shadow: 0 16px 44px rgba(0,0,0,0.18);
-      overflow: hidden;
       opacity: 0;
       transform: scale(0.98);
       pointer-events: none;
       transition: opacity .4s ease, transform .4s ease;
-      z-index: 6;
+      z-index: 120;               /* above the fixed header so the outside-X shows */
     }
     .container.is-open .viewer {
       opacity: 1;
@@ -376,16 +407,16 @@
 
     .viewer-close {
       position: absolute;
-      top: 6px;
-      right: 14px;
-      font-size: 1.5rem;
+      top: -36px;
+      right: -4px;
+      font-size: 1.9rem;
+      font-weight: 700;
       line-height: 1;
       color: #000;
-      z-index: 2;
       pointer-events: none;   /* decorative only; closing is via click-outside */
     }
 
-    .viewer-body { width: 100%; height: 100%; }
+    .viewer-body { width: 100%; height: 100%; overflow: hidden; }
     .viewer-body .pdf-frame { width: 100%; height: 100%; border: none; border-radius: 0; }
     .viewer-body .video-wrap { position: absolute; inset: 0; height: 100%; padding: 0; border: none; border-radius: 0; }
 
@@ -499,6 +530,7 @@
   </style>
 </head>
 <body>
+  <div class="water" aria-hidden="true"></div>
 <header class="fixed-header">
     <a class="contact-link" href="mailto:tom@tomhardingillustration.co.uk">
       <img src="MailImage1.png" alt="Email Tom Harding">
@@ -511,22 +543,22 @@
     <div class="pboxes">
 
       <button class="pbox pbox--illustration" data-id="illustration">
-        <span class="pbox-title">Illustration Portfolio</span>
+        <span class="pbox-title">Illustration<br>Portfolio</span>
         <img class="pbox-icon" src="handDrawing1v2.png" alt="">
       </button>
 
       <button class="pbox pbox--experimental" data-id="experimental">
-        <span class="pbox-title">Experimental Portfolio</span>
+        <span class="pbox-title">Experimental<br>Portfolio</span>
         <img class="pbox-icon" src="experimentallogov2.png" alt="">
       </button>
 
       <button class="pbox pbox--storyboarding" data-id="storyboarding">
-        <span class="pbox-title">Storyboarding Portfolio</span>
+        <span class="pbox-title">Storyboarding<br>Portfolio</span>
         <img class="pbox-icon" src="handDrawing1v2.png" alt="">
       </button>
 
       <button class="pbox pbox--showreel" data-id="showreel">
-        <span class="pbox-title">Game Art Show Reel</span>
+        <span class="pbox-title">Game Art<br>Show Reel</span>
         <img class="pbox-icon" src="handsgamecontroller1v2.png" alt="">
       </button>
 

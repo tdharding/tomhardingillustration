@@ -20,3 +20,6 @@ boat bobbing 256 opaque.png
 
 # Storyboard PDF source name — served as StoryboardFolio.pdf
 Tom Harding Storyboard Artist Portfolio under 5mb.pdf
+
+# Grid source name — served as gridbg.png
+background grid 1.png
