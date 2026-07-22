@@ -19,9 +19,7 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html { overflow-x: hidden; overflow-y: hidden; }   /* no dead-space scrolling */
-    body { overflow-x: hidden; }
-    @media (max-width: 900px) { html { overflow-y: auto; } }   /* mobile keeps vertical scroll for the stacked column */
+    html, body { overflow: hidden; }   /* no scrolling anywhere; everything fits the viewport */
     :root { --waterline: 150px; --sky-cut-l: 35%; --sky-cut-r: 65%; }   /* set from header/title in JS */
 
     .fixed-header {
@@ -215,7 +213,7 @@
       position: absolute;
       top: 3.5rem;
       right: 8.4rem;
-      z-index: 1;                 /* mail hand in front of the wave */
+      z-index: 2;                 /* mail hand in front of the wave and the boat */
       color: #000;
       text-decoration: none;
       transition: opacity 0.2s ease;
@@ -284,9 +282,9 @@
       top: 0;
       left: 0;
       right: 0;
-      height: var(--waterline);
+      height: calc(var(--waterline) - 22px);
       background: url("CitySkyLine1.png") repeat-x left bottom;
-      background-size: auto 72px;
+      background-size: auto 60px;
       z-index: 0;
       pointer-events: none;
       -webkit-mask: linear-gradient(to right, #000 var(--sky-cut-l), transparent var(--sky-cut-l), transparent var(--sky-cut-r), #000 var(--sky-cut-r));
@@ -369,10 +367,10 @@
 
     /* Resting: a loose cross/diamond. North & south sit near centre; east &
        west float within their side zones. */
-    .pbox--experimental  { left: calc(50% - 132px); top: 3%; }   /* north */
-    .pbox--showreel      { left: calc(50% - 58px);  top: 62%; }  /* south */
-    .pbox--illustration  { left: 5%;  top: 33%; }                /* west */
-    .pbox--storyboarding { left: 70%; top: 28%; }                /* east */
+    .pbox--experimental  { left: calc(50% - 92px);   top: 5%; }   /* north */
+    .pbox--showreel      { left: calc(50% - 92px);   top: 60%; }  /* south */
+    .pbox--illustration  { left: 13%;                top: 33%; }  /* west */
+    .pbox--storyboarding { left: calc(87% - 185px);  top: 33%; }  /* east */
 
     .pbox:nth-of-type(2) { animation-delay: -1.5s; }
     .pbox:nth-of-type(3) { animation-delay: -3s; }
@@ -385,19 +383,19 @@
 
     /* ---- Open state: boxes tighten to icons and dock left, viewer opens ---- */
     .container.is-open .pbox {
-      width: 194px;
-      height: 158px;
+      width: 182px;
+      height: 140px;
       gap: 0;
       animation: none;
       transform: none;
     }
     /* Collapse the title out of flow so the icon centres */
     .container.is-open .pbox-title { opacity: 0; height: 0; margin: 0; overflow: hidden; }
-    .container.is-open .pbox-icon { width: 160px; }
+    .container.is-open .pbox-icon { width: 146px; }
 
-    .container.is-open .pbox--illustration  { left: 0; top: 0.5%; }
-    .container.is-open .pbox--experimental  { left: 0; top: 25%; }
-    .container.is-open .pbox--storyboarding { left: 0; top: 49.5%; }
+    .container.is-open .pbox--illustration  { left: 0; top: 2%; }
+    .container.is-open .pbox--experimental  { left: 0; top: 26%; }
+    .container.is-open .pbox--storyboarding { left: 0; top: 50%; }
     .container.is-open .pbox--showreel      { left: 0; top: 74%; }
 
     .pbox.is-active { background: #e7e3db; }
@@ -406,7 +404,7 @@
     .viewer {
       position: absolute;
       top: 1%;
-      left: 214px;
+      left: 202px;
       right: 0;
       height: calc(70vh - 14px);
       max-height: 650px;
@@ -497,7 +495,7 @@
 
     /* Tablet / phone: scattered boxes don't fit, so stack them */
     @media (max-width: 900px) {
-      .container { padding-top: 9rem; }
+      .container { padding-top: 6.5rem; }
       .pboxes {
         position: relative;
         height: auto;
@@ -505,17 +503,21 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 1rem;
-        padding-bottom: 2.5rem;
+        gap: 1.2vh;
+        padding-bottom: 1rem;
       }
       .pbox {
         position: static;
-        width: 185px;
-        height: 172px;
-        padding: 0.8rem;
+        width: min(54vw, 172px);
+        height: auto;
+        padding: 0.45rem 0.6rem;
         animation: none;
         transform: none;
       }
+      .pbox-icon { width: 62px; }
+      .pbox-title { font-size: 0.82rem; }
+      /* Much smaller skyline on phones */
+      .skyline { background-size: auto 38px; height: calc(var(--waterline) - 12px); }
       /* Random horizontal offsets so the stacked column doesn't look ruler-straight */
       .container:not(.is-open) .pbox--illustration  { transform: translateX(-32px); }
       .container:not(.is-open) .pbox--experimental  { transform: translateX(28px); }
