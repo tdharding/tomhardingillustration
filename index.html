@@ -20,6 +20,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     html { overflow-y: scroll; }
+    :root { --waterline: 150px; }   /* y of the wavy waterline; set from header height in JS */
 
     .fixed-header {
       position: fixed;
@@ -103,7 +104,7 @@
       height: 110px;
       z-index: 1;
       pointer-events: none;
-      transition: transform 0.9s ease, opacity 0.9s ease;
+      transition: transform 2.2s ease, opacity 2.2s ease;
     }
 
     /* When the viewer is open the fish disperse off-screen, and return on close */
@@ -252,7 +253,6 @@
       background-image: url("gridbg.png");
       background-repeat: repeat;
       background-size: 148px 148px;
-      --waterline: 150px;
       -webkit-mask-image: url("UnderWavesMaskImg.png"), linear-gradient(#000, #000);
       mask-image: url("UnderWavesMaskImg.png"), linear-gradient(#000, #000);
       -webkit-mask-size: 320px 32px, 100% 300vh;
@@ -274,6 +274,21 @@
         -webkit-mask-position: -320px var(--waterline), 0 calc(var(--waterline) + 30px);
         mask-position: -320px var(--waterline), 0 calc(var(--waterline) + 30px);
       }
+    }
+
+    /* City skyline repeating above the waves; masked out behind the centred title */
+    .skyline {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--waterline);
+      background: url("CitySkyLine1.png") repeat-x left bottom;
+      background-size: auto 116px;
+      z-index: 0;
+      pointer-events: none;
+      -webkit-mask: linear-gradient(to right, #000 0 27%, transparent 37% 63%, #000 73% 100%);
+      mask: linear-gradient(to right, #000 0 27%, transparent 37% 63%, #000 73% 100%);
     }
 
     .container {
@@ -304,8 +319,8 @@
     /* ---- Floating portfolio boxes ---- */
     .pboxes {
       position: relative;
-      height: 64vh;
-      max-height: 600px;
+      height: 70vh;
+      max-height: 660px;
     }
 
     .pbox {
@@ -367,31 +382,31 @@
 
     /* ---- Open state: boxes tighten to icons and dock left, viewer opens ---- */
     .container.is-open .pbox {
-      width: 104px;
-      height: 92px;
+      width: 130px;
+      height: 114px;
       gap: 0;
       animation: none;
       transform: none;
     }
     /* Collapse the title out of flow so the icon centres */
     .container.is-open .pbox-title { opacity: 0; height: 0; margin: 0; overflow: hidden; }
-    .container.is-open .pbox-icon { width: 90px; }
+    .container.is-open .pbox-icon { width: 112px; }
 
-    .container.is-open .pbox--illustration  { left: 0; top: 2%; }
-    .container.is-open .pbox--experimental  { left: 0; top: 21%; }
+    .container.is-open .pbox--illustration  { left: 0; top: 1%; }
+    .container.is-open .pbox--experimental  { left: 0; top: 20.5%; }
     .container.is-open .pbox--storyboarding { left: 0; top: 40%; }
-    .container.is-open .pbox--showreel      { left: 0; top: 59%; }
+    .container.is-open .pbox--showreel      { left: 0; top: 59.5%; }
 
     .pbox.is-active { background: #e7e3db; }
 
     /* ---- Viewer panel ---- */
     .viewer {
       position: absolute;
-      top: 2%;
-      left: 112px;
+      top: 1%;
+      left: 150px;
       right: 0;
-      height: calc(64vh - 20px);
-      max-height: 560px;
+      height: calc(70vh - 14px);
+      max-height: 650px;
       background: #f7f5f2;
       border: 1.5px solid #1a1a1a;
       opacity: 0;
@@ -492,13 +507,12 @@
       }
       .pbox {
         position: static;
-        width: min(340px, 86vw);
-        height: auto;
-        padding: 1rem;
+        width: 168px;
+        height: 156px;
+        padding: 0.8rem;
         animation: none;
         transform: none;
       }
-      .pbox-icon { width: 76px; }
 
       /* Open: icons become a wrapping row of tabs, viewer is a fixed overlay */
       .container.is-open .pboxes {
@@ -507,8 +521,8 @@
         justify-content: center;
         gap: 0.6rem;
       }
-      .container.is-open .pbox { width: 72px; height: 60px; }
-      .container.is-open .pbox-icon { width: 46px; }
+      .container.is-open .pbox { width: 100px; height: 88px; }
+      .container.is-open .pbox-icon { width: 86px; }
 
       .viewer {
         position: fixed;
@@ -532,6 +546,7 @@
 </head>
 <body>
   <div class="water" aria-hidden="true"></div>
+  <div class="skyline" aria-hidden="true"></div>
 <header class="fixed-header">
     <a class="contact-link" href="mailto:tom@tomhardingillustration.co.uk">
       <img src="MailImage1.png" alt="Email Tom Harding">
@@ -655,6 +670,20 @@
       }
       closeViewer();
     });
+
+    // Keep the wavy waterline pinned to the actual header height, so the water
+    // edge meets the wave line at every window width.
+    function setWaterline() {
+      const h = document.querySelector('.fixed-header').getBoundingClientRect().bottom;
+      document.documentElement.style.setProperty('--waterline', Math.round(h - 15) + 'px');
+    }
+    setWaterline();
+    window.addEventListener('resize', setWaterline);
+    // ResizeObserver catches the header reflow when the web font finishes loading,
+    // at any window width — keeping the waterline glued to the wave line.
+    if (window.ResizeObserver) {
+      new ResizeObserver(setWaterline).observe(document.querySelector('.fixed-header'));
+    }
   </script>
 </body>
 </html>
