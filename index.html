@@ -19,8 +19,10 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html { overflow-y: scroll; }
-    :root { --waterline: 150px; }   /* y of the wavy waterline; set from header height in JS */
+    html { overflow-x: hidden; overflow-y: hidden; }   /* no dead-space scrolling */
+    body { overflow-x: hidden; }
+    @media (max-width: 900px) { html { overflow-y: auto; } }   /* mobile keeps vertical scroll for the stacked column */
+    :root { --waterline: 150px; --sky-cut-l: 35%; --sky-cut-r: 65%; }   /* set from header/title in JS */
 
     .fixed-header {
       position: fixed;
@@ -227,7 +229,7 @@
 
     .contact-link img {
       display: block;
-      width: 94px;
+      width: 108px;
       height: auto;
     }
 
@@ -284,11 +286,11 @@
       right: 0;
       height: var(--waterline);
       background: url("CitySkyLine1.png") repeat-x left bottom;
-      background-size: auto 116px;
+      background-size: auto 72px;
       z-index: 0;
       pointer-events: none;
-      -webkit-mask: linear-gradient(to right, #000 0 27%, transparent 37% 63%, #000 73% 100%);
-      mask: linear-gradient(to right, #000 0 27%, transparent 37% 63%, #000 73% 100%);
+      -webkit-mask: linear-gradient(to right, #000 var(--sky-cut-l), transparent var(--sky-cut-l), transparent var(--sky-cut-r), #000 var(--sky-cut-r));
+      mask: linear-gradient(to right, #000 var(--sky-cut-l), transparent var(--sky-cut-l), transparent var(--sky-cut-r), #000 var(--sky-cut-r));
     }
 
     .container {
@@ -325,8 +327,8 @@
 
     .pbox {
       position: absolute;
-      width: 168px;
-      height: 156px;
+      width: 185px;
+      height: 172px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -334,7 +336,7 @@
       gap: 0.5rem;
       padding: 0.8rem;
       background: #f7f5f2;
-      border: 1.5px solid #1a1a1a;
+      border: 1.8px solid #1a1a1a;
       cursor: pointer;
       color: #000;
       font-family: 'Libre Baskerville', serif;
@@ -350,7 +352,7 @@
     .pbox:hover { background: #efece6; }
 
     .pbox-title {
-      font-size: 1rem;
+      font-size: 1.05rem;
       letter-spacing: 0.01em;
       text-align: center;
       transition: opacity .3s ease;
@@ -359,17 +361,18 @@
 
     .pbox-icon {
       display: block;
-      width: 104px;
+      width: 120px;
       height: auto;
       pointer-events: none;
       transition: width .6s cubic-bezier(.6,.05,.25,1);
     }
 
-    /* Resting scattered positions */
-    .pbox--illustration  { left: 6%;  top: 34%; }
-    .pbox--experimental  { left: 35%; top: 6%; }
-    .pbox--storyboarding { left: 63%; top: 30%; }
-    .pbox--showreel      { left: 26%; top: 64%; }
+    /* Resting: a loose cross/diamond. North & south sit near centre; east &
+       west float within their side zones. */
+    .pbox--experimental  { left: calc(50% - 132px); top: 3%; }   /* north */
+    .pbox--showreel      { left: calc(50% - 58px);  top: 62%; }  /* south */
+    .pbox--illustration  { left: 5%;  top: 33%; }                /* west */
+    .pbox--storyboarding { left: 70%; top: 28%; }                /* east */
 
     .pbox:nth-of-type(2) { animation-delay: -1.5s; }
     .pbox:nth-of-type(3) { animation-delay: -3s; }
@@ -382,20 +385,20 @@
 
     /* ---- Open state: boxes tighten to icons and dock left, viewer opens ---- */
     .container.is-open .pbox {
-      width: 130px;
-      height: 114px;
+      width: 194px;
+      height: 158px;
       gap: 0;
       animation: none;
       transform: none;
     }
     /* Collapse the title out of flow so the icon centres */
     .container.is-open .pbox-title { opacity: 0; height: 0; margin: 0; overflow: hidden; }
-    .container.is-open .pbox-icon { width: 112px; }
+    .container.is-open .pbox-icon { width: 160px; }
 
-    .container.is-open .pbox--illustration  { left: 0; top: 1%; }
-    .container.is-open .pbox--experimental  { left: 0; top: 20.5%; }
-    .container.is-open .pbox--storyboarding { left: 0; top: 40%; }
-    .container.is-open .pbox--showreel      { left: 0; top: 59.5%; }
+    .container.is-open .pbox--illustration  { left: 0; top: 0.5%; }
+    .container.is-open .pbox--experimental  { left: 0; top: 25%; }
+    .container.is-open .pbox--storyboarding { left: 0; top: 49.5%; }
+    .container.is-open .pbox--showreel      { left: 0; top: 74%; }
 
     .pbox.is-active { background: #e7e3db; }
 
@@ -403,7 +406,7 @@
     .viewer {
       position: absolute;
       top: 1%;
-      left: 150px;
+      left: 214px;
       right: 0;
       height: calc(70vh - 14px);
       max-height: 650px;
@@ -507,12 +510,17 @@
       }
       .pbox {
         position: static;
-        width: 168px;
-        height: 156px;
+        width: 185px;
+        height: 172px;
         padding: 0.8rem;
         animation: none;
         transform: none;
       }
+      /* Random horizontal offsets so the stacked column doesn't look ruler-straight */
+      .container:not(.is-open) .pbox--illustration  { transform: translateX(-32px); }
+      .container:not(.is-open) .pbox--experimental  { transform: translateX(28px); }
+      .container:not(.is-open) .pbox--storyboarding { transform: translateX(-14px); }
+      .container:not(.is-open) .pbox--showreel      { transform: translateX(36px); }
 
       /* Open: icons become a wrapping row of tabs, viewer is a fixed overlay */
       .container.is-open .pboxes {
@@ -521,8 +529,8 @@
         justify-content: center;
         gap: 0.6rem;
       }
-      .container.is-open .pbox { width: 100px; height: 88px; }
-      .container.is-open .pbox-icon { width: 86px; }
+      .container.is-open .pbox { width: 118px; height: 102px; }
+      .container.is-open .pbox-icon { width: 100px; }
 
       .viewer {
         position: fixed;
@@ -540,7 +548,7 @@
       body { padding: 1rem 1rem 3rem; }
       .fixed-header { padding: 1.2rem 1rem 1rem; }
       .contact-link { top: 1.2rem; right: 1.2rem; }
-      .contact-link img { width: 52px; }
+      .contact-link img { width: 60px; }
     }
   </style>
 </head>
@@ -676,6 +684,20 @@
     function setWaterline() {
       const h = document.querySelector('.fixed-header').getBoundingClientRect().bottom;
       document.documentElement.style.setProperty('--waterline', Math.round(h - 15) + 'px');
+      // Keep the skyline cut-out tight to the actual title TEXT width (the h1 is
+      // full-width, so measure the text with a Range instead of the element box)
+      const range = document.createRange();
+      range.selectNodeContents(document.querySelector('.title'));
+      const rects = [...range.getClientRects()];
+      if (rects.length) {
+        const vw = window.innerWidth || document.documentElement.clientWidth;
+        const left = Math.min(...rects.map(r => r.left));
+        const right = Math.max(...rects.map(r => r.right));
+        const l = Math.max(0, (left / vw * 100) - 2.5);
+        const r = Math.min(100, (right / vw * 100) + 2.5);
+        document.documentElement.style.setProperty('--sky-cut-l', l.toFixed(1) + '%');
+        document.documentElement.style.setProperty('--sky-cut-r', r.toFixed(1) + '%');
+      }
     }
     setWaterline();
     window.addEventListener('resize', setWaterline);
