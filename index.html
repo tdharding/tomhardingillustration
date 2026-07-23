@@ -282,9 +282,9 @@
       top: 0;
       left: 0;
       right: 0;
-      height: calc(var(--waterline) - 22px);
+      height: calc(var(--waterline) - 30px);
       background: url("CitySkyLine1.png") repeat-x left bottom;
-      background-size: auto 48px;
+      background-size: auto 43px;
       z-index: 0;
       pointer-events: none;
       -webkit-mask: linear-gradient(to right, #000 var(--sky-cut-l), transparent var(--sky-cut-l), transparent var(--sky-cut-r), #000 var(--sky-cut-r));
@@ -507,23 +507,22 @@
         padding-bottom: 1rem;
       }
       .pbox {
-        position: static;
+        position: relative;   /* keeps flow layout but allows the left offsets */
         height: min(138px, 17vh);
         aspect-ratio: 185 / 172;   /* keep the desktop box proportions */
         width: auto;
         padding: 0.4rem;
-        animation: none;
-        transform: none;
+        /* floatBox bob stays enabled (transform is free now) */
       }
       .pbox-icon { width: 58px; }
       .pbox-title { font-size: 0.8rem; }
-      /* Much smaller skyline on phones */
-      .skyline { background-size: auto 33px; height: calc(var(--waterline) - 12px); }
-      /* Random horizontal offsets so the stacked column doesn't look ruler-straight */
-      .container:not(.is-open) .pbox--illustration  { transform: translateX(-32px); }
-      .container:not(.is-open) .pbox--experimental  { transform: translateX(28px); }
-      .container:not(.is-open) .pbox--storyboarding { transform: translateX(-14px); }
-      .container:not(.is-open) .pbox--showreel      { transform: translateX(36px); }
+      /* Much smaller skyline on phones, raised higher */
+      .skyline { background-size: auto 26px; height: calc(var(--waterline) - 20px); }
+      /* Random horizontal offsets (via left, so transform stays free for the float) */
+      .container:not(.is-open) .pbox--illustration  { left: -32px; }
+      .container:not(.is-open) .pbox--experimental  { left: 28px; }
+      .container:not(.is-open) .pbox--storyboarding { left: -14px; }
+      .container:not(.is-open) .pbox--showreel      { left: 36px; }
 
       /* Open: the four icons sit in a fixed single row ABOVE the viewer */
       .container.is-open .pboxes {
@@ -549,15 +548,15 @@
       .viewer {
         position: fixed;
         left: 4vw;
-        right: 4vw;
+        right: 13vw;   /* leave room for the X just outside the right edge */
         top: calc(var(--waterline) + 96px);   /* below the icon row, leaving a gap */
         bottom: 3vh;
         height: auto;
         max-height: none;
         z-index: 60;
       }
-      /* On phones the X sits just inside the viewer's top-right */
-      .viewer-close { top: 4px; right: 10px; }
+      /* On phones the X sits just outside the viewer's top-right */
+      .viewer-close { top: -2px; right: -32px; }
     }
 
     @media (max-width: 480px) {
@@ -623,7 +622,7 @@
     </a>
   </div>
   <div class="fish-lane fish-lane--right2">
-    <a class="soul-fish" href="https://www.youtube.com/shorts/NLju3teaDxk" target="_blank" rel="noopener" aria-label="Soul fish video">
+    <a class="soul-fish" href="https://tomharding.art" target="_blank" rel="noopener" aria-label="Tom Harding art">
       <img src="SoulFishSwimming.png" alt="">
     </a>
   </div>
