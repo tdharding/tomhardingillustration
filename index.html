@@ -284,7 +284,7 @@
       right: 0;
       height: calc(var(--waterline) - 22px);
       background: url("CitySkyLine1.png") repeat-x left bottom;
-      background-size: auto 60px;
+      background-size: auto 48px;
       z-index: 0;
       pointer-events: none;
       -webkit-mask: linear-gradient(to right, #000 var(--sky-cut-l), transparent var(--sky-cut-l), transparent var(--sky-cut-r), #000 var(--sky-cut-r));
@@ -424,8 +424,8 @@
 
     .viewer-close {
       position: absolute;
-      top: -36px;
-      right: -4px;
+      top: -6px;
+      right: -40px;
       font-size: 1.9rem;
       font-weight: 700;
       line-height: 1;
@@ -508,42 +508,56 @@
       }
       .pbox {
         position: static;
-        width: min(54vw, 172px);
-        height: auto;
-        padding: 0.45rem 0.6rem;
+        height: min(138px, 17vh);
+        aspect-ratio: 185 / 172;   /* keep the desktop box proportions */
+        width: auto;
+        padding: 0.4rem;
         animation: none;
         transform: none;
       }
-      .pbox-icon { width: 62px; }
-      .pbox-title { font-size: 0.82rem; }
+      .pbox-icon { width: 58px; }
+      .pbox-title { font-size: 0.8rem; }
       /* Much smaller skyline on phones */
-      .skyline { background-size: auto 38px; height: calc(var(--waterline) - 12px); }
+      .skyline { background-size: auto 33px; height: calc(var(--waterline) - 12px); }
       /* Random horizontal offsets so the stacked column doesn't look ruler-straight */
       .container:not(.is-open) .pbox--illustration  { transform: translateX(-32px); }
       .container:not(.is-open) .pbox--experimental  { transform: translateX(28px); }
       .container:not(.is-open) .pbox--storyboarding { transform: translateX(-14px); }
       .container:not(.is-open) .pbox--showreel      { transform: translateX(36px); }
 
-      /* Open: icons become a wrapping row of tabs, viewer is a fixed overlay */
+      /* Open: the four icons sit in a fixed single row ABOVE the viewer */
       .container.is-open .pboxes {
+        position: fixed;
+        top: calc(var(--waterline) + 16px);
+        left: 0;
+        right: 0;
+        height: auto;
         flex-direction: row;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         justify-content: center;
-        gap: 0.6rem;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 0;
+        z-index: 61;
       }
-      .container.is-open .pbox { width: 118px; height: 102px; }
-      .container.is-open .pbox-icon { width: 100px; }
+      .container.is-open .pbox {
+        width: 74px;
+        height: auto;            /* aspect-ratio keeps the proportion */
+      }
+      .container.is-open .pbox-icon { width: 58px; }
 
       .viewer {
         position: fixed;
         left: 4vw;
         right: 4vw;
-        top: 23vh;
+        top: calc(var(--waterline) + 96px);   /* below the icon row, leaving a gap */
         bottom: 3vh;
         height: auto;
         max-height: none;
         z-index: 60;
       }
+      /* On phones the X sits just inside the viewer's top-right */
+      .viewer-close { top: 4px; right: 10px; }
     }
 
     @media (max-width: 480px) {
