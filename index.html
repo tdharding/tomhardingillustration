@@ -365,16 +365,17 @@
       transition: width .6s cubic-bezier(.6,.05,.25,1);
     }
 
-    /* Resting: a loose cross/diamond. North & south sit near centre; east &
-       west float within their side zones. */
-    .pbox--experimental  { left: calc(50% - 92px);   top: 5%; }   /* north */
-    .pbox--showreel      { left: calc(50% - 92px);   top: 60%; }  /* south */
-    .pbox--illustration  { left: 13%;                top: 33%; }  /* west */
-    .pbox--storyboarding { left: calc(87% - 185px);  top: 33%; }  /* east */
+    /* Resting: a pentagon — apex on top, two upper sides, two lower sides */
+    .pbox--experimental  { left: calc(50% - 92px); top: 2%; }    /* apex (top centre) */
+    .pbox--illustration  { left: calc(16% - 92px); top: 25%; }   /* upper-left */
+    .pbox--storyboarding { left: calc(84% - 92px); top: 25%; }   /* upper-right */
+    .pbox--showreel      { left: calc(29% - 92px); top: 62%; }   /* lower-left */
+    .pbox--drawings      { left: calc(71% - 92px); top: 62%; }   /* lower-right */
 
     .pbox:nth-of-type(2) { animation-delay: -1.5s; }
     .pbox:nth-of-type(3) { animation-delay: -3s; }
     .pbox:nth-of-type(4) { animation-delay: -4.5s; }
+    .pbox:nth-of-type(5) { animation-delay: -6s; }
 
     @keyframes floatBox {
       0%, 100% { transform: translateY(0); }
@@ -383,20 +384,21 @@
 
     /* ---- Open state: boxes tighten to icons and dock left, viewer opens ---- */
     .container.is-open .pbox {
-      width: 182px;
-      height: 140px;
+      width: 152px;
+      height: 112px;
       gap: 0;
       animation: none;
       transform: none;
     }
     /* Collapse the title out of flow so the icon centres */
     .container.is-open .pbox-title { opacity: 0; height: 0; margin: 0; overflow: hidden; }
-    .container.is-open .pbox-icon { width: 146px; }
+    .container.is-open .pbox-icon { width: 120px; }
 
-    .container.is-open .pbox--illustration  { left: 0; top: 2%; }
-    .container.is-open .pbox--experimental  { left: 0; top: 26%; }
-    .container.is-open .pbox--storyboarding { left: 0; top: 50%; }
-    .container.is-open .pbox--showreel      { left: 0; top: 74%; }
+    .container.is-open .pbox--illustration  { left: 0; top: 1%; }
+    .container.is-open .pbox--experimental  { left: 0; top: 20.5%; }
+    .container.is-open .pbox--storyboarding { left: 0; top: 40%; }
+    .container.is-open .pbox--showreel      { left: 0; top: 59.5%; }
+    .container.is-open .pbox--drawings      { left: 0; top: 79%; }
 
     .pbox.is-active { background: #e7e3db; }
 
@@ -404,7 +406,7 @@
     .viewer {
       position: absolute;
       top: 1%;
-      left: 202px;
+      left: 172px;
       right: 0;
       height: calc(70vh - 14px);
       max-height: 650px;
@@ -435,6 +437,25 @@
 
     .viewer-body { width: 100%; height: 100%; overflow: hidden; }
     .viewer-body .pdf-frame { width: 100%; height: 100%; border: none; border-radius: 0; }
+
+    /* Drawings: a self-contained vertical scroll area of images */
+    .viewer-body .gallery {
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      background: #f7f5f2;
+      padding: 14px;
+      text-align: center;
+    }
+    .viewer-body .gallery img {
+      display: block;
+      width: 100%;
+      max-width: 640px;
+      height: auto;
+      margin: 0 auto 14px;
+    }
+    .viewer-body .gallery img:last-child { margin-bottom: 0; }
     .viewer-body .video-wrap { position: absolute; inset: 0; height: 100%; padding: 0; border: none; border-radius: 0; }
 
     .pdf-wrapper {
@@ -508,13 +529,13 @@
       }
       .pbox {
         position: relative;   /* keeps flow layout but allows the left offsets */
-        height: min(138px, 17vh);
+        height: min(122px, 15vh);   /* smaller so five boxes fit the column */
         aspect-ratio: 185 / 172;   /* keep the desktop box proportions */
         width: auto;
-        padding: 0.4rem;
+        padding: 0.35rem;
         /* floatBox bob stays enabled (transform is free now) */
       }
-      .pbox-icon { width: min(94px, 12.5vh); }   /* bigger, but scales so it never overflows the box */
+      .pbox-icon { width: min(80px, 10.5vh); }   /* scales so it never overflows the box */
       .pbox-title { font-size: 0.8rem; }
       /* Much smaller skyline on phones, raised higher */
       .skyline { background-size: auto 26px; height: calc(var(--waterline) - 20px); }
@@ -540,10 +561,10 @@
         z-index: 61;
       }
       .container.is-open .pbox {
-        width: 74px;
+        width: 64px;
         height: auto;            /* aspect-ratio keeps the proportion */
       }
-      .container.is-open .pbox-icon { width: 58px; }
+      .container.is-open .pbox-icon { width: 50px; }
 
       .viewer {
         position: fixed;
@@ -601,6 +622,11 @@
         <img class="pbox-icon" src="handsgamecontroller1v2.png" alt="">
       </button>
 
+      <button class="pbox pbox--drawings" data-id="drawings">
+        <span class="pbox-title">Drawings</span>
+        <img class="pbox-icon" src="handDrawing1v2.png" alt="">
+      </button>
+
       <section class="viewer" aria-label="Portfolio viewer">
         <span class="viewer-close" aria-hidden="true">✕</span>
         <div class="viewer-body"></div>
@@ -635,7 +661,8 @@
       illustration:  { type: 'pdf',   file: 'ArtAndIllustrationFolio.pdf', title: 'Art & Illustration Portfolio' },
       experimental:  { type: 'pdf',   file: 'ExperimentalFolio1.pdf',      title: 'Experimental Portfolio' },
       storyboarding: { type: 'pdf',   file: 'StoryboardFolio.pdf',         title: 'Storyboarding Portfolio' },
-      showreel:      { type: 'video', file: 'https://www.youtube.com/embed/frCgh0a3msg', title: 'Game Art Show Reel' }
+      showreel:      { type: 'video', file: 'https://www.youtube.com/embed/frCgh0a3msg', title: 'Game Art Show Reel' },
+      drawings:      { type: 'gallery', images: ['drawings/Scan_20260805.jpg', 'drawings/Scan_20260806.jpg'], title: 'Drawings' }
     };
 
     const stage = document.getElementById('stage');
@@ -654,6 +681,11 @@
       if (s.type === 'pdf') {
         viewerBody.innerHTML =
           '<iframe class="pdf-frame" src="' + getPdfSrc(s.file) + '" title="' + s.title + '"></iframe>';
+      } else if (s.type === 'gallery') {
+        viewerBody.innerHTML =
+          '<div class="gallery">' +
+          s.images.map(function (src) { return '<img src="' + src + '" alt="">'; }).join('') +
+          '</div>';
       } else {
         viewerBody.innerHTML =
           '<div class="video-wrap"><iframe src="' + s.file + '" title="' + s.title + '" allowfullscreen></iframe></div>';

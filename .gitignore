@@ -7,6 +7,7 @@ experimentallogov1.png
 *~
 *.kra
 *-autosave.kra
+*.af
 
 # Favicon source art — kept locally; only favicon.png is used
 large favicon.png
