@@ -339,7 +339,7 @@
       color: #000;
       font-family: 'Libre Baskerville', serif;
       z-index: 3;
-      animation: floatBox 6s ease-in-out infinite;
+      /* float disabled 2026-09-22 — see disabled-effects/floating-boxes.css */
       transition: left .6s cubic-bezier(.6,.05,.25,1),
                   top .6s cubic-bezier(.6,.05,.25,1),
                   width .6s cubic-bezier(.6,.05,.25,1),
@@ -371,16 +371,6 @@
     .pbox--storyboarding { left: calc(84% - 92px); top: 25%; }   /* upper-right */
     .pbox--showreel      { left: calc(36% - 92px); top: 62%; }   /* lower-left */
     .pbox--drawings      { left: calc(64% - 92px); top: 62%; }   /* lower-right */
-
-    .pbox:nth-of-type(2) { animation-delay: -1.5s; }
-    .pbox:nth-of-type(3) { animation-delay: -3s; }
-    .pbox:nth-of-type(4) { animation-delay: -4.5s; }
-    .pbox:nth-of-type(5) { animation-delay: -6s; }
-
-    @keyframes floatBox {
-      0%, 100% { transform: translateY(0); }
-      50%      { transform: translateY(-8px); }
-    }
 
     /* ---- Open state: boxes tighten to icons and dock left, viewer opens ---- */
     .container.is-open .pbox {
@@ -533,13 +523,12 @@
         aspect-ratio: 185 / 172;   /* keep the desktop box proportions */
         width: auto;
         padding: 0.35rem;
-        /* floatBox bob stays enabled (transform is free now) */
       }
       .pbox-icon { width: min(80px, 10.5vh); }   /* scales so it never overflows the box */
       .pbox-title { font-size: 0.8rem; }
       /* Much smaller skyline on phones, raised higher */
       .skyline { background-size: auto 26px; height: calc(var(--waterline) - 20px); }
-      /* Random horizontal offsets (via left, so transform stays free for the float) */
+      /* Random horizontal offsets (via left; transform kept free for the float) */
       .container:not(.is-open) .pbox--illustration  { left: -32px; }
       .container:not(.is-open) .pbox--experimental  { left: 28px; }
       .container:not(.is-open) .pbox--storyboarding { left: -14px; }

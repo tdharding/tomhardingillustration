@@ -1,0 +1,45 @@
+/* ---------------------------------------------------------------------------
+   Floating (bobbing) portfolio boxes — DISABLED 2026-09-22
+
+   The five square links on the front page used to bob gently up and down,
+   each one offset so they drifted out of sync with each other.
+
+   To put it back, paste the three parts below into index.html at the
+   places named, and delete the "float disabled" comments left there.
+   --------------------------------------------------------------------------- */
+
+
+/* PART 1 — inside the `.pbox { ... }` rule, alongside `z-index: 3;` */
+
+    animation: floatBox 6s ease-in-out infinite;
+
+
+/* PART 2 — after the `.pbox--drawings` resting-position rule.
+   These stagger the five boxes so they don't bob in unison. */
+
+    .pbox:nth-of-type(2) { animation-delay: -1.5s; }
+    .pbox:nth-of-type(3) { animation-delay: -3s; }
+    .pbox:nth-of-type(4) { animation-delay: -4.5s; }
+    .pbox:nth-of-type(5) { animation-delay: -6s; }
+
+
+/* PART 3 — the keyframes themselves, directly after PART 2. */
+
+    @keyframes floatBox {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-8px); }
+    }
+
+
+/* ---------------------------------------------------------------------------
+   NOTES for whoever restores this
+
+   * `.container.is-open .pbox` already carries `animation: none; transform: none;`
+     so the bob stops when a box is opened and the boxes dock to the left.
+     That rule is still in index.html and needs no change.
+
+   * On mobile the boxes are laid out in a flex column and nudged sideways with
+     `left:` rather than `transform:` — deliberately, so `transform` stays free
+     for this animation. Those `left` offsets are still in index.html under the
+     mobile media query and still work either way.
+   --------------------------------------------------------------------------- */
