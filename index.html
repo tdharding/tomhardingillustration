@@ -30,6 +30,96 @@
     html, body { overflow: hidden; }   /* no scrolling anywhere; everything fits the viewport */
     :root { --waterline: 150px; --sky-cut-l: 35%; --sky-cut-r: 65%; }   /* set from header/title in JS */
 
+    /* ---- Website Tuner values: the tuner reads and writes this block ---- */
+    :root {
+      /* Desktop */
+      --box-scale: 1.2;                /* portfolio box size (closed boxes) */
+      --box-line: 6px;             /* portfolio box border */
+      --viewer-line: 6px;          /* viewer panel border */
+      --box-corner: 15px;             /* portfolio box corner rounding */
+      --box-padding: 0.6rem;         /* space inside portfolio boxes */
+      --title-size-large: 2.48rem;   /* title, largest (wide windows) */
+      --title-outline: 4.6px;          /* title text outline */
+      --title-skyline-gap: -71px;     /* skyline cut-out either side of the title */
+      --button-text: 1.97rem;       /* box titles */
+      --logo-size: 163px;            /* box logos */
+      --logo-size-open: 120px;       /* box logos while the viewer is open */
+      --mail-size: 132px;            /* mail hand */
+      --phone-size: 113px;           /* phone (opposite the mail hand; 103 = its height) */
+      --boat-size: 60px;             /* wave boat */
+      --fish-size: 32px;             /* soul fish */
+      --wave-line: 4.2px;            /* wavy line along the waves */
+      --grid-line: 6.1px;            /* water grid backdrop */
+      --skyline-line: 4.5px;         /* city skyline */
+      --skyline-scale: 1.54;            /* skyline size (1 = 43px high) */
+      --skyline-step-width: 19px;     /* width of each step down towards the title */
+      --skyline-drop-shrink: 0.74;    /* each drop down = this x the last one */
+      --skyline-steps: 6;             /* steps down towards the title */
+      --skyline-mid-height: 33px;     /* steps start here, above the skyline ground */
+      --skyline-title-height: -56px;    /* last step by the title, above the skyline ground (minus = below) */
+      /* Phone */
+      --box-scale-phone: 1;          /* under 900px, closed boxes */
+      --box-line-phone: 4.2px;       /* under 900px */
+      --viewer-line-phone: 1.8px;    /* under 900px */
+      --box-corner-phone: 10px;       /* under 900px */
+      --box-padding-phone: 0.35rem;  /* under 900px */
+      --title-size-small: 1.56rem;  /* title, smallest (narrow windows) */
+      --title-outline-phone: 2.8px;    /* under 900px */
+      --title-skyline-gap-phone: 0px; /* under 900px */
+      --button-text-phone: 1.25rem;   /* under 900px */
+      --logo-size-phone: 117px;       /* under 900px, never above 10.5vh */
+      --logo-size-open-phone: 51px;  /* under 900px */
+      --mail-size-phone: 80px;       /* under 480px */
+      --phone-size-phone: 69px;       /* under 480px */
+      --boat-size-phone: 60px;       /* under 900px */
+      --fish-size-phone: 26px;       /* under 1320px */
+      --wave-line-phone: 2.1px;      /* under 900px */
+      --grid-line-phone: 2.8px;      /* under 900px */
+      --skyline-line-phone: 1.9px;   /* under 900px */
+      --skyline-scale-phone: 0.46; /* under 900px */
+      --skyline-step-width-phone: 14px; /* under 900px */
+      --skyline-drop-shrink-phone: 0.72; /* under 900px */
+      --skyline-steps-phone: 4;       /* under 900px */
+      --skyline-mid-height-phone: 6px; /* under 900px */
+      --skyline-title-height-phone: -35px; /* under 900px */
+      /* Colours (web and mobile) */
+      --page-colour: #e5f9ff;        /* page background */
+      --water-colour: #5e7ba1;       /* water under the waves */
+      --grid-line-colour: #2a5184;   /* water grid */
+      --wave-line-colour: #a2bbec;   /* wavy line along the waves */
+      --skyline-colour: #a2bbec;     /* city skyline */
+      --skyline-fill-colour: #365587; /* under the skyline, down to the water */
+      --logo-shading-colour: #a2bbec; /* box logo shading fill (transparent = grey PNG shading) */
+      --logo-white-colour: #e5f9ff; /* logo + mail hand white bg fill (transparent = white PNG) */
+      --contact-hover-colour: #a8d2ff; /* phone + mail white fill under the mouse */
+      --fish-colour: transparent;    /* soul fish as one solid fill (transparent = the drawing) */
+      --boat-colour: transparent;    /* boat as one solid fill (transparent = the drawing) */
+      --title-colour: #000000;       /* title */
+      --title-outline-colour: #ffffff; /* title text outline */
+      --box-colour: #f7f5f2;         /* portfolio box fill */
+      --box-hover-colour: #a8d2ff;   /* box fill under the mouse */
+      --box-active-colour: #a8d2ff;  /* box fill while its viewer is open */
+      --box-line-colour: #a2bbec;    /* portfolio box border */
+      --box-text-colour: #000000;    /* box titles */
+      --viewer-colour: #f7f5f2;      /* viewer panel fill */
+      --viewer-line-colour: #a8d2ff; /* viewer panel border */
+      --viewer-close-colour: #000000; /* viewer X */
+      --gallery-colour: #f7f5f2;     /* Drawings / Experimental scroll area */
+      --pdf-colour: #ffffff;         /* behind the PDFs */
+      --footer-colour: #aaaaaa;      /* copyright line */
+      /* Contact */
+      --phone-number: "+447944984176";            /* the phone icon calls this */
+    }
+
+    /* Wave line, grid and skyline: hand-drawn lines traced to SVG paths, so the
+       line thickness is a setting (the --*-line values above) */
+    .drawn-line {
+      fill: none;
+      stroke: #000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
     .fixed-header {
       position: fixed;
       top: 0;
@@ -42,25 +132,30 @@
       --tile: 320px;
     }
 
-    .fixed-header::after {
-      content: "";
+    /* Wavy line along the header's bottom edge. The 320 x 32 tile sits in the
+       middle of a 64px band so thick lines aren't clipped; the strip is one
+       tile wider than the screen and slides one tile left, then repeats. */
+    .wave-line {
       position: absolute;
       left: 0;
       right: 0;
       bottom: 0;
-      height: calc(var(--tile) / 10);
+      height: calc(var(--tile) / 5);
       transform: translateY(50%);
-      background-image: url("WaveyLine.png");
-      background-repeat: repeat-x;
-      background-position: 0 center;
-      background-size: var(--tile) 100%;
-      animation: waveFlow 8.6s linear infinite;
+      overflow: hidden;
       pointer-events: none;
     }
+    .wave-line svg {
+      display: block;
+      width: calc(100% + var(--tile));
+      height: 100%;
+      animation: waveFlow 8.6s linear infinite;
+    }
+    .wave-line .drawn-line { stroke-width: var(--wave-line); stroke: var(--wave-line-colour); }
 
     @keyframes waveFlow {
-      from { background-position-x: 0; }
-      to   { background-position-x: calc(-1 * var(--tile)); }
+      from { transform: translateX(0); }
+      to   { transform: translateX(calc(-1 * var(--tile))); }
     }
 
     /* Easter-egg boat: sails right-to-left across the wave every so often */
@@ -68,7 +163,7 @@
       position: absolute;
       bottom: -24px;
       left: 100%;
-      width: 60px;
+      width: var(--boat-size);
       pointer-events: none;
       z-index: 1;
       animation: boatSail 120s linear infinite;
@@ -128,7 +223,7 @@
       position: absolute;
       top: 0;
       left: 0;
-      width: 32px;
+      width: var(--fish-size);
       offset-rotate: 0deg;          /* stay upright; don't tumble along the curve */
       pointer-events: none;
       animation: fishSwim 36.8s ease-in-out infinite alternate;
@@ -173,6 +268,18 @@
       animation-delay: -8s;
     }
 
+    /* Fish / boat fill: the img's own picture is pushed out of its box and its
+       background, masked by that same PNG (--fill-png, set in JS), shows the
+       shape in --fish-colour / --boat-colour. Each is off while transparent. */
+    .fish-coloured .soul-fish img,
+    .boat-coloured .wave-boat img {
+      object-position: 0 -100000px;
+      -webkit-mask: var(--fill-png) center / contain no-repeat;
+      mask: var(--fill-png) center / contain no-repeat;
+    }
+    .fish-coloured .soul-fish img { background: var(--fish-colour); }
+    .boat-coloured .wave-boat img { background: var(--boat-colour); }
+
     @keyframes fishSwim {
       from { offset-distance: 0%; }
       to   { offset-distance: 100%; }
@@ -204,7 +311,7 @@
       .fish-lane--right  { left: auto; right: 2vw;  top: 48vh; }
       .fish-lane--right2 { left: auto; right: 2vw;  top: 66vh; }
 
-      .soul-fish { width: 26px; }
+      .soul-fish { width: var(--fish-size-phone); }
 
       .fish-lane--left .soul-fish {
         offset-path: path("M 0,45 C 30,12 60,78 90,45 C 108,28 122,58 135,45");
@@ -224,23 +331,81 @@
       z-index: 2;                 /* mail hand in front of the wave and the boat */
       color: #000;
       text-decoration: none;
-      transition: opacity 0.2s ease;
       font-size: 1.8rem;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
     }
 
-    .contact-link:hover { opacity: 0.45; }
+    /* Under the mouse the white fill turns --contact-hover-colour (the fill span
+       sits over the white PNG, so this shows whether or not that's coloured) */
+    .contact-link:hover .pbox-white-fill { background: var(--contact-hover-colour); }
 
-    .contact-link img {
+    /* Three-part mail hand like the box logos: white fill, shading, linework */
+    .contact-icon {
       display: block;
-      width: 108px;
-      height: auto;
+      position: relative;
+      width: var(--mail-size);
+      aspect-ratio: 716 / 980;
     }
+    .contact-icon img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .contact-icon img:nth-of-type(2) { opacity: 0.5; }   /* shading layer */
+
+    /* Phone: mirrors the mail hand on the left; calls --phone-number.
+       Phones dial straight away; computers open the card underneath. */
+    .phone-contact {
+      position: absolute;
+      top: 3.5rem;
+      left: 8.4rem;
+      z-index: 2;
+    }
+    .phone-contact .contact-link { position: static; }
+    .phone-contact .contact-icon { width: var(--phone-size); aspect-ratio: 594 / 1044; }
+    .phone-card {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      margin-top: 0.6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 0.7rem 0.9rem;
+      background: var(--box-colour);
+      border: var(--box-line) solid var(--box-line-colour);
+      border-radius: var(--box-corner);
+      color: var(--box-text-colour);
+      font-size: 1.3rem;
+      white-space: nowrap;
+      text-align: left;
+    }
+    .phone-card[hidden] { display: none; }
+    .phone-card-number { user-select: all; }
+    .phone-card-actions { display: flex; gap: 0.5rem; }
+    .phone-card-actions a,
+    .phone-card-actions button {
+      flex: 1;
+      padding: 0.25rem 0.7rem;
+      font: inherit;
+      font-size: 1.1rem;
+      color: inherit;
+      text-align: center;
+      text-decoration: none;
+      background: transparent;
+      border: 2px solid var(--box-line-colour);
+      border-radius: calc(var(--box-corner) / 2);
+      cursor: pointer;
+    }
+    .phone-card-actions a:hover,
+    .phone-card-actions button:hover { background: var(--box-hover-colour); }
 
     body {
-      background: #f7f5f2;
+      background: var(--page-colour);
       color: #000;
       font-family: 'NomKabarFont2', sans-serif;
       font-weight: 300;
@@ -257,10 +422,7 @@
       inset: 0;
       z-index: 0;
       pointer-events: none;
-      background-color: #d5d0c7;
-      background-image: url("gridbg.png");
-      background-repeat: repeat;
-      background-size: 148px 148px;
+      background-color: var(--water-colour);
       -webkit-mask-image: url("UnderWavesMaskImg.png"), linear-gradient(#000, #000);
       mask-image: url("UnderWavesMaskImg.png"), linear-gradient(#000, #000);
       -webkit-mask-size: 320px 32px, 100% 300vh;
@@ -284,19 +446,56 @@
       }
     }
 
+    /* Repeating 148px grid tile over the water colour */
+    .water svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .water .drawn-line { stroke-width: var(--grid-line); stroke: var(--grid-line-colour); }
+
     /* City skyline repeating above the waves; masked out behind the centred title */
     .skyline {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
-      height: calc(var(--waterline) - 30px);
-      background: url("CitySkyLine1.png") repeat-x left bottom;
-      background-size: auto 43px;
+      height: calc(var(--waterline) + 32px);
       z-index: 0;
       pointer-events: none;
       -webkit-mask: linear-gradient(to right, #000 var(--sky-cut-l), transparent var(--sky-cut-l), transparent var(--sky-cut-r), #000 var(--sky-cut-r));
       mask: linear-gradient(to right, #000 var(--sky-cut-l), transparent var(--sky-cut-l), transparent var(--sky-cut-r), #000 var(--sky-cut-r));
+    }
+    /* One 43px-high tile repeating along the line, scaled by --sky-scale
+       (stroke divided back up so it stays in px); setSkyline() puts the scale
+       onto the pattern. Both layers run down past the wavy water edge so the
+       steps can go below the skyline ground; --sky-drop = the skyline's 30px
+       lift above the waterline + the 32px wave edge */
+    .skyline {
+      --sky-drop: 62px;
+      --sky-scale: var(--skyline-scale);
+      --sky-line: var(--skyline-line);
+      --sky-cut-gap: var(--title-skyline-gap);
+      --sky-step-width: var(--skyline-step-width);
+      --sky-drop-shrink: var(--skyline-drop-shrink);
+      --sky-steps: var(--skyline-steps);
+      --sky-mid-height: var(--skyline-mid-height);
+      --sky-title-height: var(--skyline-title-height);
+    }
+    .skyline svg { position: absolute; left: 0; bottom: var(--sky-drop); width: 100%; height: calc(43px * var(--sky-scale)); overflow: visible; }
+    .skyline rect { fill: url(#skylineTile); }
+    .skyline .drawn-line { stroke-width: calc(var(--sky-line) / var(--sky-scale)); stroke: var(--skyline-colour); }
+    /* The steps down into the title gap are drawn in px, outside the scaled tile */
+    .skyline .drawn-line.sky-steps { stroke-width: var(--sky-line); }
+    /* Skyline fill: the same tile closed off underneath, on its own layer behind
+       the water so it runs down under the wavy edge */
+    .skyline-fill rect { fill: url(#skylineFillTile); }
+    .skyline-fill path { fill: var(--skyline-fill-colour); }
+    .skyline-fill::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: calc(var(--sky-drop) + 1px);   /* 1px under the tile so no seam shows */
+      /* only out to each wall: setSkySteps() fills under the steps itself */
+      background: linear-gradient(to right, var(--skyline-fill-colour) var(--sky-fill-l, 100%), transparent var(--sky-fill-l, 100%), transparent var(--sky-fill-r, 100%), var(--skyline-fill-colour) var(--sky-fill-r, 100%));
     }
 
     .container {
@@ -318,10 +517,14 @@
     .title {
       font-family: 'NomKabarFont2', sans-serif;
       font-weight: 400;
-      font-size: clamp(1.045rem, 3.29vw, 2.17rem);
+      font-size: clamp(var(--title-size-small), 3.29vw, var(--title-size-large));
       letter-spacing: 0.01em;
       line-height: 1.15;
-      color: #000;
+      color: var(--title-colour);
+      /* Outline drawn behind the fill, so the stroke is doubled to show at full width */
+      --t-outline: var(--title-outline);
+      -webkit-text-stroke: calc(var(--t-outline) * 2) var(--title-outline-colour);
+      paint-order: stroke fill;
     }
 
     /* ---- Floating portfolio boxes ---- */
@@ -333,18 +536,19 @@
 
     .pbox {
       position: absolute;
-      width: 185px;
-      height: 172px;
+      width: calc(185px * var(--box-scale));
+      height: calc(172px * var(--box-scale));
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 0.5rem;
-      padding: 0.8rem;
-      background: #f7f5f2;
-      border: 1.8px solid #1a1a1a;
+      padding: var(--box-padding);
+      background: var(--box-colour);
+      border: var(--box-line) solid var(--box-line-colour);
+      border-radius: var(--box-corner);
       cursor: pointer;
-      color: #000;
+      color: var(--box-text-colour);
       font-family: 'NomKabarFont2', sans-serif;
       z-index: 3;
       /* float disabled 2026-09-22 — see disabled-effects/floating-boxes.css */
@@ -355,10 +559,10 @@
                   box-shadow .3s ease, border-color .3s ease;
     }
 
-    .pbox:hover { background: #efece6; }
+    .pbox:hover { background: var(--box-hover-colour); }
 
     .pbox-title {
-      font-size: 1.05rem;
+      font-size: var(--button-text);
       letter-spacing: 0.01em;
       text-align: center;
       transition: opacity .3s ease;
@@ -368,7 +572,7 @@
     .pbox-icon {
       display: block;
       position: relative;
-      width: 120px;
+      width: var(--logo-size);
       aspect-ratio: 492 / 372;   /* the old single-image icons' canvas */
       pointer-events: none;
       transition: width .6s cubic-bezier(.6,.05,.25,1);
@@ -381,14 +585,35 @@
       height: 100%;
       object-fit: contain;
     }
-    .pbox-icon img:nth-child(2) { opacity: 0.5; }   /* shading layer */
+    .pbox-icon img:nth-of-type(2) { opacity: 0.5; }   /* shading layer */
+    /* Shading colour fill: the shading PNG's shape filled with --logo-shading-colour
+       (span added after each shading img in JS). Off while that colour is transparent. */
+    .pbox-shading-fill {
+      position: absolute;
+      inset: 0;
+      background: var(--logo-shading-colour);
+      -webkit-mask: var(--shading-png) center / contain no-repeat;
+      mask: var(--shading-png) center / contain no-repeat;
+    }
+    .shading-coloured .pbox-icon img:nth-of-type(2),
+    .shading-coloured .contact-icon img:nth-of-type(2) { opacity: 0; }   /* the fill replaces the grey shading */
+    /* White fill colour: same idea for the white bg PNG, filled with --logo-white-colour */
+    .pbox-white-fill {
+      position: absolute;
+      inset: 0;
+      background: var(--logo-white-colour);
+      -webkit-mask: var(--white-png) center / contain no-repeat;
+      mask: var(--white-png) center / contain no-repeat;
+    }
+    .white-coloured .pbox-icon img:nth-of-type(1),
+    .white-coloured .contact-icon img:nth-of-type(1) { opacity: 0; }   /* the fill replaces the white */
 
     /* Resting: a pentagon — apex on top, two upper sides, two lower sides */
-    .pbox--illustration  { left: calc(50% - 92px); top: 2%; }    /* apex (top centre) */
-    .pbox--experimental  { left: calc(16% - 92px); top: 25%; }   /* upper-left */
-    .pbox--storyboarding { left: calc(84% - 92px); top: 25%; }   /* upper-right */
-    .pbox--showreel      { left: calc(36% - 92px); top: 62%; }   /* lower-left */
-    .pbox--drawings      { left: calc(64% - 92px); top: 62%; }   /* lower-right */
+    .pbox--illustration  { left: calc(50% - 92px * var(--box-scale)); top: 2%; }    /* apex (top centre) */
+    .pbox--experimental  { left: calc(16% - 92px * var(--box-scale)); top: 25%; }   /* upper-left */
+    .pbox--storyboarding { left: calc(84% - 92px * var(--box-scale)); top: 25%; }   /* upper-right */
+    .pbox--showreel      { left: calc(36% - 92px * var(--box-scale)); top: 62%; }   /* lower-left */
+    .pbox--drawings      { left: calc(64% - 92px * var(--box-scale)); top: 62%; }   /* lower-right */
 
     /* ---- Open state: boxes tighten to icons and dock left, viewer opens ---- */
     .container.is-open .pbox {
@@ -400,7 +625,7 @@
     }
     /* Collapse the title out of flow so the icon centres */
     .container.is-open .pbox-title { opacity: 0; height: 0; margin: 0; overflow: hidden; }
-    .container.is-open .pbox-icon { width: 120px; }
+    .container.is-open .pbox-icon { width: var(--logo-size-open); }
 
     .container.is-open .pbox--illustration  { left: 0; top: 1%; }
     .container.is-open .pbox--experimental  { left: 0; top: 20.5%; }
@@ -408,7 +633,7 @@
     .container.is-open .pbox--showreel      { left: 0; top: 59.5%; }
     .container.is-open .pbox--drawings      { left: 0; top: 79%; }
 
-    .pbox.is-active { background: #e7e3db; }
+    .pbox.is-active { background: var(--box-active-colour); }
 
     /* ---- Viewer panel ---- */
     .viewer {
@@ -418,8 +643,8 @@
       right: 0;
       height: calc(70vh - 14px);
       max-height: 650px;
-      background: #f7f5f2;
-      border: 1.5px solid #1a1a1a;
+      background: var(--viewer-colour);
+      border: var(--viewer-line) solid var(--viewer-line-colour);
       opacity: 0;
       transform: scale(0.98);
       pointer-events: none;
@@ -439,7 +664,7 @@
       font-size: 1.9rem;
       font-weight: 700;
       line-height: 1;
-      color: #000;
+      color: var(--viewer-close-colour);
       pointer-events: none;   /* decorative only; closing is via click-outside */
     }
 
@@ -452,7 +677,7 @@
       height: 100%;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
-      background: #f7f5f2;
+      background: var(--gallery-colour);
       padding: 14px;
       text-align: center;
     }
@@ -479,7 +704,7 @@
       height: 70vh;
       border: 1px solid #d8d5d0;
       border-radius: 4px;
-      background: #fff;
+      background: var(--pdf-colour);
       display: block;
     }
 
@@ -522,7 +747,7 @@
       margin-top: 1.25rem;
       font-size: 0.7rem;
       letter-spacing: 0.1em;
-      color: #aaa;
+      color: var(--footer-colour);
       text-transform: uppercase;
     }
 
@@ -541,20 +766,37 @@
       }
       .pbox {
         position: relative;   /* keeps flow layout but allows the left offsets */
-        height: min(122px, 15vh);   /* smaller so five boxes fit the column */
+        height: calc(min(122px, 15vh) * var(--box-scale-phone));   /* smaller so five boxes fit the column */
         aspect-ratio: 185 / 172;   /* keep the desktop box proportions */
         width: auto;
-        padding: 0.35rem;
+        padding: var(--box-padding-phone);
+        border-width: var(--box-line-phone);
+        border-radius: var(--box-corner-phone);
       }
-      .pbox-icon { width: min(80px, 10.5vh); }   /* scales so it never overflows the box */
-      .pbox-title { font-size: 0.8rem; }
+      .pbox-icon { width: min(var(--logo-size-phone), 10.5vh); }   /* scales so it never overflows the box */
+      .pbox-title { font-size: var(--button-text-phone); }
+      .wave-boat { width: var(--boat-size-phone); }
       /* Much smaller skyline on phones, raised higher */
-      .skyline { background-size: auto 26px; height: calc(var(--waterline) - 20px); }
+      .skyline {
+        --sky-drop: 52px;   /* 20px lift + 32px wave edge */
+        --sky-scale: var(--skyline-scale-phone);
+        --sky-line: var(--skyline-line-phone);
+        --sky-cut-gap: var(--title-skyline-gap-phone);
+        --sky-step-width: var(--skyline-step-width-phone);
+        --sky-drop-shrink: var(--skyline-drop-shrink-phone);
+        --sky-steps: var(--skyline-steps-phone);
+        --sky-mid-height: var(--skyline-mid-height-phone);
+        --sky-title-height: var(--skyline-title-height-phone);
+      }
+      .title { --t-outline: var(--title-outline-phone); }
+      .wave-line .drawn-line { stroke-width: var(--wave-line-phone); }
+      .water .drawn-line { stroke-width: var(--grid-line-phone); }
       /* Random horizontal offsets (via left; transform kept free for the float) */
       .container:not(.is-open) .pbox--illustration  { left: -32px; }
       .container:not(.is-open) .pbox--experimental  { left: 28px; }
       .container:not(.is-open) .pbox--storyboarding { left: -14px; }
       .container:not(.is-open) .pbox--showreel      { left: 36px; }
+      .container:not(.is-open) .pbox--drawings      { left: calc(64% - 92px); }   /* as before Box scale: the web Box scale doesn't move it here */
 
       /* Open: the four icons sit in a fixed single row ABOVE the viewer */
       .container.is-open .pboxes {
@@ -575,7 +817,7 @@
         width: 64px;
         height: auto;            /* aspect-ratio keeps the proportion */
       }
-      .container.is-open .pbox-icon { width: 50px; }
+      .container.is-open .pbox-icon { width: var(--logo-size-open-phone); }
 
       .viewer {
         position: fixed;
@@ -586,6 +828,7 @@
         height: auto;
         max-height: none;
         z-index: 60;
+        border-width: var(--viewer-line-phone);
       }
       /* On phones the X sits just outside the viewer's top-right */
       .viewer-close { top: -2px; right: -32px; }
@@ -595,19 +838,32 @@
       body { padding: 1rem 1rem 0.75rem; }
       .fixed-header { padding: 1.2rem 1rem 1rem; }
       .contact-link { top: 1.2rem; right: 1.2rem; }
-      .contact-link img { width: 60px; }
+      .contact-icon { width: var(--mail-size-phone); }
+      .phone-contact { top: 1.2rem; left: 1.2rem; }
+      .phone-contact .contact-icon { width: var(--phone-size-phone); }
     }
   </style>
 </head>
 <body>
-  <div class="water" aria-hidden="true"></div>
-  <div class="skyline" aria-hidden="true"></div>
+  <div class="skyline skyline-fill" aria-hidden="true"><svg><defs><pattern id="skylineFillTile" width="184.11" height="43" patternUnits="userSpaceOnUse"><path d="M-10.41 34.12 L0 34.62 L3.43 33.8 L4.01 20.78 L15.91 21.75 L16.11 7.61 L30.18 7.65 L30.23 33.53 L44 33.72 L45.81 19.01 L61.94 19.5 L62.77 5.47 L80.14 6.74 L81.34 35.05 L97.02 35.02 L97.12 21.58 L112.46 19.93 L112.2 6.02 L129.48 6.19 L128.63 33.68 L143.57 34.59 L144.15 22.23 L158.97 20.92 L160.84 7.62 L174.74 6.62 L173.69 34.12 L184.11 34.62 L187.54 33.8 L187.54 43 L-10.41 43 Z"/></pattern></defs><rect id="skylineFillLeft" width="100%" height="100%"/><rect id="skylineFillRight" height="100%"/><path id="skylineFillSteps"/></svg></div>
+  <div class="water" aria-hidden="true"><svg><defs><pattern id="gridTile" width="148" height="148" patternUnits="userSpaceOnUse"><path class="drawn-line" d="M32.15 -18.5C32.08 -15.42 32.07 -12.33 32.03 -9.25C31.99 -6.17 31.96 -3.08 31.93 0C31.91 3.08 31.88 6.17 31.87 9.25C31.86 12.33 31.85 15.42 31.88 18.5C31.91 21.58 32.03 24.67 32.06 27.75C32.08 30.83 32.04 33.92 32.02 37C31.99 40.08 31.93 43.17 31.9 46.25C31.88 49.33 31.86 52.42 31.89 55.5C31.91 58.58 31.96 61.67 32.07 64.75C32.17 67.83 32.41 70.92 32.54 74C32.68 77.08 32.76 80.17 32.88 83.25C33 86.33 33.18 89.42 33.26 92.5C33.34 95.58 33.41 98.67 33.36 101.75C33.31 104.83 33.12 107.92 32.97 111C32.82 114.08 32.6 117.17 32.47 120.25C32.33 123.33 32.22 126.42 32.15 129.5C32.08 132.58 32.07 135.67 32.03 138.75C31.99 141.83 31.96 144.92 31.93 148C31.91 151.08 31.88 154.17 31.87 157.25 M119.62 -18.5C119.69 -15.42 119.74 -12.33 119.83 -9.25C119.92 -6.17 120.08 -3.08 120.18 0C120.28 3.08 120.37 6.17 120.45 9.25C120.52 12.33 120.55 15.42 120.61 18.5C120.67 21.58 120.75 24.67 120.79 27.75C120.83 30.83 120.83 33.92 120.85 37C120.86 40.08 120.87 43.17 120.87 46.25C120.87 49.33 120.87 52.42 120.86 55.5C120.85 58.58 120.82 61.67 120.81 64.75C120.8 67.83 120.81 70.92 120.8 74C120.79 77.08 120.86 80.17 120.76 83.25C120.65 86.33 120.37 89.42 120.17 92.5C119.96 95.58 119.67 98.67 119.53 101.75C119.4 104.83 119.38 107.92 119.37 111C119.35 114.08 119.4 117.17 119.44 120.25C119.48 123.33 119.56 126.42 119.62 129.5C119.69 132.58 119.74 135.67 119.83 138.75C119.92 141.83 120.08 144.92 120.18 148C120.28 151.08 120.37 154.17 120.45 157.25 M-18.5 26C-15.42 26 -12.33 26 -9.25 25.97C-6.17 25.94 -3.08 25.85 0 25.82C3.08 25.79 6.17 25.8 9.25 25.79C12.33 25.77 15.42 25.75 18.5 25.73C21.58 25.71 24.67 25.68 27.75 25.67C30.83 25.65 33.92 25.63 37 25.61C40.08 25.6 43.17 25.58 46.25 25.57C49.33 25.56 52.42 25.58 55.5 25.58C58.58 25.57 61.67 25.57 64.75 25.55C67.83 25.53 70.92 25.5 74 25.46C77.08 25.42 80.17 25.34 83.25 25.33C86.33 25.32 89.42 25.35 92.5 25.42C95.58 25.49 98.67 25.66 101.75 25.74C104.83 25.82 107.92 25.86 111 25.9C114.08 25.93 117.17 25.93 120.25 25.94C123.33 25.96 126.42 25.99 129.5 26C132.58 26 135.67 26 138.75 25.97C141.83 25.94 144.92 25.85 148 25.82C151.08 25.79 154.17 25.8 157.25 25.79 M-18.5 117.73C-15.42 117.75 -12.33 117.82 -9.25 117.89C-6.17 117.95 -3.08 118.05 0 118.12C3.08 118.19 6.17 118.25 9.25 118.3C12.33 118.36 15.42 118.43 18.5 118.47C21.58 118.51 24.67 118.52 27.75 118.54C30.83 118.55 33.92 118.56 37 118.57C40.08 118.57 43.17 118.58 46.25 118.57C49.33 118.56 52.42 118.55 55.5 118.49C58.58 118.44 61.67 118.34 64.75 118.24C67.83 118.15 70.92 118.01 74 117.93C77.08 117.85 80.17 117.8 83.25 117.76C86.33 117.73 89.42 117.72 92.5 117.72C95.58 117.72 98.67 117.75 101.75 117.77C104.83 117.79 107.92 117.84 111 117.84C114.08 117.84 117.17 117.77 120.25 117.76C123.33 117.74 126.42 117.71 129.5 117.73C132.58 117.75 135.67 117.82 138.75 117.89C141.83 117.95 144.92 118.05 148 118.12C151.08 118.19 154.17 118.25 157.25 118.3"/></pattern></defs><rect width="100%" height="100%" fill="url(#gridTile)"/></svg></div>
+  <div class="skyline" aria-hidden="true"><svg><defs><path id="skylinePath" d="M-10.41 34.12 L0 34.62 L3.43 33.8 L4.01 20.78 L15.91 21.75 L16.11 7.61 L30.18 7.65 L30.23 33.53 L44 33.72 L45.81 19.01 L61.94 19.5 L62.77 5.47 L80.14 6.74 L81.34 35.05 L97.02 35.02 L97.12 21.58 L112.46 19.93 L112.2 6.02 L129.48 6.19 L128.63 33.68 L143.57 34.59 L144.15 22.23 L158.97 20.92 L160.84 7.62 L174.74 6.62 L173.69 34.12 L184.11 34.62 L187.54 33.8"/><pattern id="skylineTile" width="184.11" height="43" patternUnits="userSpaceOnUse"><use href="#skylinePath" class="drawn-line"/></pattern></defs><rect id="skylineLeft" width="100%" height="100%"/><rect id="skylineRight" height="100%"/><path id="skylineSteps" class="drawn-line sky-steps"/></svg></div>
 <header class="fixed-header">
     <a class="contact-link" href="mailto:tom@tomhardingillustration.co.uk">
-      <img src="MailImage1.png" alt="Email Tom Harding">
+      <span class="contact-icon"><img src="logos/website%20bits%20-%20Website%20Mail%20Redraw%20Template%20-%20mailhandwhitefill.png" alt=""><img src="logos/website%20bits%20-%20Website%20Mail%20Redraw%20Template%20-%20mailhandshading.png" alt=""><img src="logos/website%20bits%20-%20Website%20Mail%20Redraw%20Template%20-%20mailhandline.png" alt="Email Tom Harding"></span>
     </a>
+    <div class="phone-contact">
+      <a class="contact-link" id="phoneLink" href="tel:">
+        <span class="contact-icon"><img src="logos/website%20bits%20-%20Website%20Mail%20Redraw%20Template%20-%20PhoneCallWhiteBG.png" alt=""><img src="logos/website%20bits%20-%20Website%20Mail%20Redraw%20Template%20-%20PhoneCallShading.png" alt=""><img src="logos/website%20bits%20-%20Website%20Mail%20Redraw%20Template%20-%20PhoneCallLines.png" alt="Phone Tom Harding"></span>
+      </a>
+      <div class="phone-card" id="phoneCard" hidden>
+        <span class="phone-card-number" id="phoneNumber"></span>
+        <span class="phone-card-actions"><a id="phoneCall" href="tel:">Call</a><button type="button" id="phoneCopy">Copy</button></span>
+      </div>
+    </div>
     <h1 class="title">Tom Harding<br>Art &amp; Illustration</h1>
     <div class="wave-boat"><a href="boatimage20072026.jpeg" target="_blank" rel="noopener" aria-label="Open drawing"><img src="boat.png" alt=""></a></div>
+    <div class="wave-line" aria-hidden="true"><svg><defs><pattern id="waveTile" width="320" height="64" patternUnits="userSpaceOnUse"><path class="drawn-line" d="M-12.8 25.53C-10.67 24.82 -8.53 24.19 -6.4 23.95C-4.27 23.7 -2.13 23.6 0 24.06C2.13 24.51 4.27 25.68 6.4 26.69C8.53 27.7 10.67 29.14 12.8 30.11C14.93 31.08 17.07 31.99 19.2 32.51C21.33 33.04 23.47 33.29 25.6 33.26C27.73 33.24 29.87 32.97 32 32.37C34.13 31.76 36.27 30.53 38.4 29.62C40.53 28.71 42.67 27.7 44.8 26.92C46.93 26.13 49.07 25.41 51.2 24.91C53.33 24.42 55.47 24.14 57.6 23.95C59.73 23.75 61.87 23.65 64 23.75C66.13 23.85 68.27 24.06 70.4 24.56C72.53 25.06 74.67 25.82 76.8 26.75C78.93 27.69 81.07 28.99 83.2 30.15C85.33 31.32 87.47 32.77 89.6 33.75C91.73 34.73 93.87 35.66 96 36.05C98.13 36.44 100.27 36.35 102.4 36.09C104.53 35.83 106.67 35.24 108.8 34.48C110.93 33.72 113.07 32.48 115.2 31.53C117.33 30.59 119.47 29.65 121.6 28.81C123.73 27.98 125.87 27.29 128 26.52C130.13 25.75 132.27 24.91 134.4 24.19C136.53 23.48 138.67 22.79 140.8 22.24C142.93 21.68 145.07 21.22 147.2 20.87C149.33 20.53 151.47 20.28 153.6 20.17C155.73 20.06 157.87 20.02 160 20.19C162.13 20.36 164.27 20.72 166.4 21.19C168.53 21.66 170.67 22.26 172.8 22.99C174.93 23.72 177.07 24.63 179.2 25.56C181.33 26.49 183.47 27.53 185.6 28.57C187.73 29.6 189.87 30.75 192 31.77C194.13 32.79 196.27 33.75 198.4 34.69C200.53 35.63 202.67 36.85 204.8 37.38C206.93 37.91 209.07 37.99 211.2 37.88C213.33 37.77 215.47 37.37 217.6 36.71C219.73 36.06 221.87 35.02 224 33.96C226.13 32.9 228.27 31.35 230.4 30.35C232.53 29.36 234.67 28.63 236.8 28C238.93 27.37 241.07 26.83 243.2 26.57C245.33 26.31 247.47 26.25 249.6 26.45C251.73 26.64 253.87 27.13 256 27.75C258.13 28.37 260.27 29.29 262.4 30.17C264.53 31.05 266.67 32.26 268.8 33.04C270.93 33.82 273.07 34.5 275.2 34.86C277.33 35.23 279.47 35.37 281.6 35.23C283.73 35.09 285.87 34.67 288 34.01C290.13 33.36 292.27 32.27 294.4 31.3C296.53 30.33 298.67 29.14 300.8 28.18C302.93 27.22 305.07 26.23 307.2 25.53C309.33 24.82 311.47 24.19 313.6 23.95C315.73 23.7 317.87 23.6 320 24.06C322.13 24.51 324.27 25.68 326.4 26.69"/></pattern></defs><rect width="100%" height="100%" fill="url(#waveTile)"/></svg></div>
   </header>
 
   <div class="container" id="stage">
@@ -635,7 +891,7 @@
 
       <button class="pbox pbox--drawings" data-id="drawings">
         <span class="pbox-title">Drawings</span>
-        <span class="pbox-icon"><img src="logos/website%20bits%20-%20New%20logos%20drawings%20-%20drawinglogowhitebg.png" alt=""><img src="logos/website%20bits%20-%20New%20logos%20drawings%20-%20drawinglogoshading.png" alt=""><img src="logos/website%20bits%20-%20New%20logos%20drawings%20-%20drawinglogo.png" alt=""></span>
+        <span class="pbox-icon"><img src="logos/website%20bits%20-%20New%20logos%20drawings%20-%20drawingswhitebg.png" alt=""><img src="logos/website%20bits%20-%20New%20logos%20drawings%20-%20drawingsshading.png" alt=""><img src="logos/website%20bits%20-%20New%20logos%20drawings%20-%20drawingslinework.png" alt=""></span>
       </button>
 
       <section class="viewer" aria-label="Portfolio viewer">
@@ -742,6 +998,7 @@
 
     // Keep the wavy waterline pinned to the actual header height, so the water
     // edge meets the wave line at every window width.
+    let skyCut = null;   // title gap edges in px, for setSkySteps()
     function setWaterline() {
       const h = document.querySelector('.fixed-header').getBoundingClientRect().bottom;
       document.documentElement.style.setProperty('--waterline', Math.round(h - 15) + 'px');
@@ -752,12 +1009,18 @@
       const rects = [...range.getClientRects()];
       if (rects.length) {
         const vw = window.innerWidth || document.documentElement.clientWidth;
+        // A minus gap brings the skyline in over the title, up to its centre
+        const gap = parseFloat(getComputedStyle(document.querySelector('.skyline')).getPropertyValue('--sky-cut-gap')) || 0;
         const left = Math.min(...rects.map(r => r.left));
         const right = Math.max(...rects.map(r => r.right));
-        const l = Math.max(0, (left / vw * 100) - 2.5);
-        const r = Math.min(100, (right / vw * 100) + 2.5);
+        const centre = (left + right) / 2;
+        const cutL = Math.min(centre, left - gap), cutR = Math.max(centre, right + gap);
+        const l = Math.max(0, cutL / vw * 100);
+        const r = Math.min(100, cutR / vw * 100);
         document.documentElement.style.setProperty('--sky-cut-l', l.toFixed(1) + '%');
         document.documentElement.style.setProperty('--sky-cut-r', r.toFixed(1) + '%');
+        skyCut = { l: cutL, r: cutR };
+        setSkySteps();
       }
     }
     setWaterline();
@@ -767,6 +1030,171 @@
     if (window.ResizeObserver) {
       new ResizeObserver(setWaterline).observe(document.querySelector('.fixed-header'));
     }
+
+    // Skyline scale: pattern size isn't CSS, so copy --sky-scale onto the tile
+    function setSkyline() {
+      const css = getComputedStyle(document.querySelector('.skyline'));
+      const scale = parseFloat(css.getPropertyValue('--sky-scale')) || 1;
+      for (const id of ['skylineTile', 'skylineFillTile']) {
+        document.getElementById(id).setAttribute('patternTransform', 'scale(' + scale + ')');
+      }
+      setSkySteps();
+    }
+
+    // Steps down into the title gap: either side the skyline stops at a tall
+    // building's wall and drops to --sky-mid-height (a flat roof out to where
+    // the steps begin), then --sky-steps steps, each --sky-step-width wide,
+    // come down to --sky-title-height, each drop --sky-drop-shrink x the last
+    // one. The last step ends at the gap round the title, where it drops to
+    // the ground (or, below the ground, runs on flat into the gap).
+    // Heights are px above the skyline's ground line.
+    function setSkySteps() {
+      if (!skyCut) return;
+      const css = getComputedStyle(document.querySelector('.skyline'));
+      const scale = parseFloat(css.getPropertyValue('--sky-scale')) || 1;
+      const line = Math.max(0, parseFloat(css.getPropertyValue('--sky-line')) || 0);
+      const stepWidth = Math.max(0, parseFloat(css.getPropertyValue('--sky-step-width')) || 0);
+      const dropShrink = Math.max(0.05, parseFloat(css.getPropertyValue('--sky-drop-shrink')) || 1);
+      const count = Math.max(0, Math.round(parseFloat(css.getPropertyValue('--sky-steps')) || 0));
+      const midHeight = Math.max(0, parseFloat(css.getPropertyValue('--sky-mid-height')) || 0);
+      const titleHeight = parseFloat(css.getPropertyValue('--sky-title-height')) || 0;
+      const tile = 184.11 * scale;                    // one repeat, px
+      const ground = 34.62 * scale;
+      const bottom = 43 * scale;
+      const svgWidth = document.querySelector('.skyline svg').getBoundingClientRect().width;
+      // Tall buildings' top corners in the tile: right-hand corners end the left
+      // side's skyline, left-hand corners end the right side's
+      const tallRight = [[30.18, 7.65], [80.14, 6.74], [129.48, 6.19], [174.74, 6.62]];
+      const tallLeft = [[16.11, 7.61], [62.77, 5.47], [112.2, 6.02], [160.84, 7.62]];
+      const corners = (list, near) => {
+        const k = Math.floor(near / tile);
+        return [k - 1, k, k + 1].flatMap(n => list.map(([x, y]) => [n * tile + x * scale, y * scale]));
+      };
+      const run = count * stepWidth;
+      // The steps end a line's width inside the gap edge so the last drop isn't
+      // clipped; the wall is the nearest tall building leaving at least one step
+      // width of mid-height roof before the steps
+      const endL = skyCut.l - line, endR = skyCut.r + line;
+      const reach = run + stepWidth;
+      const wallL = corners(tallRight, endL - reach).filter(c => c[0] <= endL - reach).reduce((a, b) => b[0] > a[0] ? b : a);
+      const wallR = corners(tallLeft, endR + reach).filter(c => c[0] >= endR + reach).reduce((a, b) => b[0] < a[0] ? b : a);
+      // dir +1 runs right (left side), -1 runs left (right side). The drops
+      // share mid height - title height between them: under 1 they get
+      // smaller towards the title, over 1 bigger.
+      const drops = [];
+      for (let i = 0; i < count; i++) drops.push(Math.pow(dropShrink, i));
+      const dropTotal = drops.reduce((a, b) => a + b, 0) || 1;
+      const steps = (wall, dir, end) => {
+        let x = wall[0], y = ground - midHeight;
+        let d = 'M' + x.toFixed(2) + ' ' + wall[1].toFixed(2) + ' V' + y.toFixed(2);
+        x = end - dir * run;   // the mid-height roof runs out to the first step
+        d += ' H' + x.toFixed(2);
+        drops.forEach(drop => {
+          y += (midHeight - titleHeight) * drop / dropTotal;
+          d += ' V' + y.toFixed(2);
+          x += dir * stepWidth;
+          d += ' H' + x.toFixed(2);
+        });
+        if (titleHeight >= 0) d += ' V' + ground.toFixed(2);
+        return d + ' H' + (end + dir * (line + 2)).toFixed(2);
+      };
+      const left = steps(wallL, 1, endL);
+      const right = steps(wallR, -1, endR);
+      document.getElementById('skylineSteps').setAttribute('d', left + ' ' + right);
+      // The steps' fill runs right down the fill layer (past the wave edge),
+      // and the layer's band under the tile stops at each wall
+      const drop = parseFloat(css.getPropertyValue('--sky-drop')) || 0;
+      const floor = Math.max(bottom + drop + 1, ground - titleHeight);
+      const close = (d, wall) => d + ' V' + floor.toFixed(2) + ' H' + wall[0].toFixed(2) + ' Z';
+      document.getElementById('skylineFillSteps').setAttribute('d', close(left, wallL) + ' ' + close(right, wallR));
+      const fillLayer = document.querySelector('.skyline-fill');
+      fillLayer.style.setProperty('--sky-fill-l', (wallL[0] + 0.5).toFixed(2) + 'px');
+      fillLayer.style.setProperty('--sky-fill-r', (wallR[0] - 0.5).toFixed(2) + 'px');
+      // The repeating tile only up to each wall (fill overlaps 0.5px so no seam)
+      const place = (id, x0, x1) => {
+        const rect = document.getElementById(id);
+        rect.setAttribute('x', Math.max(0, x0).toFixed(2));
+        rect.setAttribute('width', Math.max(0, x1 - Math.max(0, x0)).toFixed(2));
+      };
+      place('skylineLeft', 0, wallL[0]);
+      place('skylineRight', wallR[0], svgWidth);
+      place('skylineFillLeft', 0, wallL[0] + 0.5);
+      place('skylineFillRight', wallR[0] - 0.5, svgWidth);
+    }
+    setSkyline();
+    window.addEventListener('resize', setSkyline);
+
+    // Logo shading colour fill: a span masked by each shading PNG. While
+    // --logo-shading-colour is transparent the grey PNG shading shows as before.
+    for (const img of document.querySelectorAll('.pbox-icon img:nth-of-type(2), .contact-icon img:nth-of-type(2)')) {
+      const fill = document.createElement('span');
+      fill.className = 'pbox-shading-fill';
+      fill.style.setProperty('--shading-png', 'url("' + img.src + '")');
+      img.after(fill);
+    }
+    // Logo white fill: the same for each white bg PNG with --logo-white-colour
+    for (const img of document.querySelectorAll('.pbox-icon img:nth-of-type(1), .contact-icon img:nth-of-type(1)')) {
+      const fill = document.createElement('span');
+      fill.className = 'pbox-white-fill';
+      fill.style.setProperty('--white-png', 'url("' + img.src + '")');
+      img.after(fill);
+    }
+    function setFillClass(selector, className) {
+      const fill = document.querySelector(selector);
+      const colour = fill ? getComputedStyle(fill).backgroundColor : '';
+      const off = !colour || colour === 'transparent' || /^rgba\(.*,\s*0\)$/.test(colour);
+      document.documentElement.classList.toggle(className, !off);
+    }
+    // Soul fish / boat fill: each img masked by its own PNG (see .fish-coloured)
+    for (const img of document.querySelectorAll('.soul-fish img, .wave-boat img')) {
+      img.style.setProperty('--fill-png', 'url("' + img.src + '")');
+    }
+    function setShadingFill() {
+      setFillClass('.pbox-shading-fill', 'shading-coloured');
+      setFillClass('.pbox-white-fill', 'white-coloured');
+      for (const name of ['fish', 'boat']) {
+        const colour = getComputedStyle(document.documentElement).getPropertyValue('--' + name + '-colour').trim();
+        document.documentElement.classList.toggle(name + '-coloured', !!colour && colour !== 'transparent');
+      }
+    }
+    setShadingFill();
+
+    // Phone: the number lives in --phone-number. On a phone (touch, no hover)
+    // the tel: link dials as normal; on a computer the click opens a card with
+    // the number, Call (whatever calling app the computer has) and Copy.
+    const phoneLink = document.getElementById('phoneLink');
+    const phoneCard = document.getElementById('phoneCard');
+    function setPhone() {
+      const number = getComputedStyle(document.documentElement).getPropertyValue('--phone-number').trim().replace(/^["']|["']$/g, '');
+      const tel = 'tel:' + number.replace(/[^\d+]/g, '');
+      phoneLink.href = tel;
+      document.getElementById('phoneCall').href = tel;
+      document.getElementById('phoneNumber').textContent = number;
+    }
+    setPhone();
+    phoneLink.addEventListener('click', e => {
+      if (matchMedia('(hover: none) and (pointer: coarse)').matches) return;
+      e.preventDefault();
+      phoneCard.hidden = !phoneCard.hidden;
+    });
+    document.getElementById('phoneCopy').addEventListener('click', async e => {
+      const button = e.currentTarget;
+      try {
+        await navigator.clipboard.writeText(document.getElementById('phoneNumber').textContent);
+        button.textContent = 'Copied';
+      } catch (err) {
+        getSelection().selectAllChildren(document.getElementById('phoneNumber'));
+        button.textContent = 'Press Ctrl+C';
+      }
+      setTimeout(() => { button.textContent = 'Copy'; }, 1500);
+    });
+    document.addEventListener('click', e => {
+      if (!phoneCard.hidden && !e.target.closest('.phone-contact')) phoneCard.hidden = true;
+    });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') phoneCard.hidden = true; });
+
+    // The Website Tuner swaps the <style> text when a value changes
+    new MutationObserver(() => { setWaterline(); setSkyline(); setShadingFill(); setPhone(); }).observe(document.head, { childList: true, characterData: true, subtree: true });
   </script>
 </body>
 </html>
