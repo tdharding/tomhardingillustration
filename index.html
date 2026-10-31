@@ -359,10 +359,19 @@
 
     .pbox-icon {
       display: block;
+      position: relative;
       width: 120px;
-      height: auto;
+      aspect-ratio: 492 / 372;   /* the old single-image icons' canvas */
       pointer-events: none;
       transition: width .6s cubic-bezier(.6,.05,.25,1);
+    }
+    /* Three-part logos: white bg, shading, linework stacked in that order */
+    .pbox-icon img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
 
     /* Resting: a pentagon — apex on top, two upper sides, two lower sides */
@@ -597,27 +606,27 @@
 
       <button class="pbox pbox--illustration" data-id="illustration">
         <span class="pbox-title">Illustration</span>
-        <img class="pbox-icon" src="handDrawing1v2.png" alt="">
+        <span class="pbox-icon"><img src="logos/website%20bits%20-%20New%20logos%20drawings%20-%20drawinglogowhitebg.png" alt=""><img src="logos/website%20bits%20-%20New%20logos%20drawings%20-%20drawinglogoshading.png" alt=""><img src="logos/website%20bits%20-%20New%20logos%20drawings%20-%20drawinglogo.png" alt=""></span>
       </button>
 
       <button class="pbox pbox--experimental" data-id="experimental">
         <span class="pbox-title">Experimental</span>
-        <img class="pbox-icon" src="experimentallogov2.png" alt="">
+        <span class="pbox-icon"><img src="logos/website%20bits%20-%20New%20logos%20drawings%20-%20experimentalwhitebg.png" alt=""><img src="logos/website%20bits%20-%20New%20logos%20drawings%20-%20experimentalshading%20copy.png" alt=""><img src="logos/website%20bits%20-%20New%20logos%20drawings%20-%20experimental.png" alt=""></span>
       </button>
 
       <button class="pbox pbox--storyboarding" data-id="storyboarding">
         <span class="pbox-title">Storyboarding</span>
-        <img class="pbox-icon" src="StoryboardingLogo1.png" alt="">
+        <span class="pbox-icon"><img src="logos/website%20bits%20-%20New%20logos%20drawings%20-%20storyboardingwhitebg.png" alt=""><img src="logos/website%20bits%20-%20New%20logos%20drawings%20-%20storyboardlogoshading%20copy.png" alt=""><img src="logos/website%20bits%20-%20New%20logos%20drawings%20-%20storyboardinglogolinework.png" alt=""></span>
       </button>
 
       <button class="pbox pbox--showreel" data-id="showreel">
         <span class="pbox-title">Game Art</span>
-        <img class="pbox-icon" src="handsgamecontroller1v2.png" alt="">
+        <span class="pbox-icon"><img src="logos/website%20bits%20-%20New%20logos%20drawings%20-%20gaminglineswhitebg.png" alt=""><img src="logos/website%20bits%20-%20New%20logos%20drawings%20-%20gamiinglinesshading%20copy.png" alt=""><img src="logos/website%20bits%20-%20New%20logos%20drawings%20-%20gaminglines.png" alt=""></span>
       </button>
 
       <button class="pbox pbox--drawings" data-id="drawings">
         <span class="pbox-title">Drawings</span>
-        <img class="pbox-icon" src="handDrawing1v2.png" alt="">
+        <span class="pbox-icon"><img src="logos/website%20bits%20-%20New%20logos%20drawings%20-%20drawinglogowhitebg.png" alt=""><img src="logos/website%20bits%20-%20New%20logos%20drawings%20-%20drawinglogoshading.png" alt=""><img src="logos/website%20bits%20-%20New%20logos%20drawings%20-%20drawinglogo.png" alt=""></span>
       </button>
 
       <section class="viewer" aria-label="Portfolio viewer">
