@@ -447,6 +447,10 @@
     }
     .viewer-body .gallery img:last-child { margin-bottom: 0; }
     .viewer-body .video-wrap { position: absolute; inset: 0; height: 100%; padding: 0; border: none; border-radius: 0; }
+    /* Inside a scrolling gallery the video and PDF stack above the images */
+    .viewer-body .gallery .video-wrap { position: relative; inset: auto; height: 0; padding-bottom: 56.25%; margin-bottom: 14px; }
+    .viewer-body .gallery .pdf-frame { margin-bottom: 14px; }
+    .viewer-body .gallery > :last-child { margin-bottom: 0; }
 
     .pdf-wrapper {
       position: relative;
@@ -648,7 +652,7 @@
 
     const SECTIONS = {
       illustration:  { type: 'pdf',   file: 'ArtAndIllustrationFolio.pdf', title: 'Art & Illustration Portfolio' },
-      experimental:  { type: 'pdf',   file: 'ExperimentalFolio1.pdf',      title: 'Experimental Portfolio' },
+      experimental:  { type: 'gallery', video: 'https://www.youtube.com/embed/a1LGS7IE8gc', pdf: 'ExperimentalFolio1.pdf', images: [], title: 'Experimental Portfolio' },
       storyboarding: { type: 'pdf',   file: 'StoryboardFolio.pdf',         title: 'Storyboarding Portfolio' },
       showreel:      { type: 'video', file: 'https://www.youtube.com/embed/frCgh0a3msg', title: 'Game Art Show Reel' },
       drawings:      { type: 'gallery', images: ['drawings/Scan_20260805.jpg', 'drawings/Scan_20260806.jpg'], title: 'Drawings' }
@@ -671,8 +675,11 @@
         viewerBody.innerHTML =
           '<iframe class="pdf-frame" src="' + getPdfSrc(s.file) + '" title="' + s.title + '"></iframe>';
       } else if (s.type === 'gallery') {
+        // Optional video, then optional PDF, then the images, all in one scroll
         viewerBody.innerHTML =
           '<div class="gallery">' +
+          (s.video ? '<div class="video-wrap"><iframe src="' + s.video + '" title="' + s.title + '" allowfullscreen></iframe></div>' : '') +
+          (s.pdf ? '<iframe class="pdf-frame" src="' + getPdfSrc(s.pdf) + '" title="' + s.title + '"></iframe>' : '') +
           s.images.map(function (src) { return '<img src="' + src + '" alt="">'; }).join('') +
           '</div>';
       } else {
