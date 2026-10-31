@@ -29,6 +29,8 @@
 
     html, body { overflow: hidden; }   /* no scrolling anywhere; everything fits the viewport */
     :root { --waterline: 150px; --sky-cut-l: 35%; --sky-cut-r: 65%; }   /* set from header/title in JS */
+    :root { --wave-tile: var(--wave-repeat); --wave-raise: var(--wave-height); }
+    @media (max-width: 900px) { :root { --wave-tile: var(--wave-repeat-phone); --wave-raise: var(--wave-height-phone); } }
 
     /* ---- Website Tuner values: the tuner reads and writes this block ---- */
     :root {
@@ -39,7 +41,7 @@
       --box-corner: 15px;             /* portfolio box corner rounding */
       --box-padding: 0.6rem;         /* space inside portfolio boxes */
       --title-size-large: 2.48rem;   /* title, largest (wide windows) */
-      --title-outline: 4.6px;          /* title text outline */
+      --title-outline: 0px;          /* title text outline */
       --title-skyline-gap: -71px;     /* skyline cut-out either side of the title */
       --button-text: 1.97rem;       /* box titles */
       --logo-size: 163px;            /* box logos */
@@ -49,6 +51,8 @@
       --boat-size: 60px;             /* wave boat */
       --fish-size: 32px;             /* soul fish */
       --wave-line: 4.2px;            /* wavy line along the waves */
+      --wave-repeat: 341px;          /* width of one wave before it repeats (320 = as drawn) */
+      --wave-height: -21px;            /* waterline up (+) or down (-): wave line, water edge, skyline */
       --grid-line: 6.1px;            /* water grid backdrop */
       --skyline-line: 4.5px;         /* city skyline */
       --skyline-scale: 1.54;            /* skyline size (1 = 43px high) */
@@ -57,23 +61,41 @@
       --skyline-steps: 6;             /* steps down towards the title */
       --skyline-mid-height: 33px;     /* steps start here, above the skyline ground */
       --skyline-title-height: -56px;    /* last step by the title, above the skyline ground (minus = below) */
+      /* Closed box positions: x = box centre across, y = box top down (% of the box area); scale = x Box scale */
+      --box-illustration-x: 49.3%;
+      --box-illustration-y: 3.8%;
+      --box-illustration-scale: 1.18;
+      --box-experimental-x: 24.8%;
+      --box-experimental-y: 14.3%;
+      --box-experimental-scale: 1.04;
+      --box-storyboarding-x: 74.4%;
+      --box-storyboarding-y: 20%;
+      --box-storyboarding-scale: 1.16;
+      --box-showreel-x: 37%;
+      --box-showreel-y: 51.5%;
+      --box-showreel-scale: 1.1;
+      --box-drawings-x: 60.4%;
+      --box-drawings-y: 64.2%;
+      --box-drawings-scale: 1;
       /* Phone */
       --box-scale-phone: 1;          /* under 900px, closed boxes */
       --box-line-phone: 4.2px;       /* under 900px */
       --viewer-line-phone: 1.8px;    /* under 900px */
       --box-corner-phone: 10px;       /* under 900px */
       --box-padding-phone: 0.35rem;  /* under 900px */
-      --title-size-small: 1.56rem;  /* title, smallest (narrow windows) */
-      --title-outline-phone: 2.8px;    /* under 900px */
-      --title-skyline-gap-phone: 0px; /* under 900px */
+      --title-size-small: 2rem;  /* title, smallest (narrow windows) */
+      --title-outline-phone: 0px;    /* under 900px */
+      --title-skyline-gap-phone: -42px; /* under 900px */
       --button-text-phone: 1.25rem;   /* under 900px */
       --logo-size-phone: 117px;       /* under 900px, never above 10.5vh */
       --logo-size-open-phone: 51px;  /* under 900px */
-      --mail-size-phone: 80px;       /* under 480px */
-      --phone-size-phone: 69px;       /* under 480px */
+      --mail-size-phone: 53px;       /* under 480px */
+      --phone-size-phone: 42px;       /* under 480px */
       --boat-size-phone: 60px;       /* under 900px */
       --fish-size-phone: 26px;       /* under 1320px */
-      --wave-line-phone: 2.1px;      /* under 900px */
+      --wave-line-phone: 3px;      /* under 900px */
+      --wave-repeat-phone: 109px;    /* under 900px */
+      --wave-height-phone: -14px;      /* under 900px */
       --grid-line-phone: 2.8px;      /* under 900px */
       --skyline-line-phone: 1.9px;   /* under 900px */
       --skyline-scale-phone: 0.46; /* under 900px */
@@ -81,28 +103,43 @@
       --skyline-drop-shrink-phone: 0.72; /* under 900px */
       --skyline-steps-phone: 4;       /* under 900px */
       --skyline-mid-height-phone: 6px; /* under 900px */
-      --skyline-title-height-phone: -35px; /* under 900px */
+      --skyline-title-height-phone: -31px; /* under 900px */
+      --box-illustration-x-phone: 48.2%;   /* under 900px, closed box positions as above */
+      --box-illustration-y-phone: -0.5%;
+      --box-illustration-scale-phone: 1.19;
+      --box-experimental-x-phone: 70.8%;
+      --box-experimental-y-phone: 23.7%;
+      --box-experimental-scale-phone: 1.18;
+      --box-storyboarding-x-phone: 25.4%;
+      --box-storyboarding-y-phone: 31.2%;
+      --box-storyboarding-scale-phone: 1;
+      --box-showreel-x-phone: 60.6%;
+      --box-showreel-y-phone: 53.6%;
+      --box-showreel-scale-phone: 1;
+      --box-drawings-x-phone: 33.4%;
+      --box-drawings-y-phone: 73.9%;
+      --box-drawings-scale-phone: 1;
       /* Colours (web and mobile) */
       --page-colour: #e5f9ff;        /* page background */
       --water-colour: #5e7ba1;       /* water under the waves */
-      --grid-line-colour: #2a5184;   /* water grid */
+      --grid-line-colour: #365587;   /* water grid */
       --wave-line-colour: #a2bbec;   /* wavy line along the waves */
       --skyline-colour: #a2bbec;     /* city skyline */
       --skyline-fill-colour: #365587; /* under the skyline, down to the water */
       --logo-shading-colour: #a2bbec; /* box logo shading fill (transparent = grey PNG shading) */
       --logo-white-colour: #e5f9ff; /* logo + mail hand white bg fill (transparent = white PNG) */
-      --contact-hover-colour: #a8d2ff; /* phone + mail white fill under the mouse */
-      --fish-colour: transparent;    /* soul fish as one solid fill (transparent = the drawing) */
-      --boat-colour: transparent;    /* boat as one solid fill (transparent = the drawing) */
+      --contact-hover-colour: #a2bbec; /* phone + mail white fill under the mouse */
+      --fish-colour: #e5f9ff;    /* soul fish as one solid fill (transparent = the drawing) */
+      --boat-colour: #e5f9ff;    /* boat as one solid fill (transparent = the drawing) */
       --title-colour: #000000;       /* title */
       --title-outline-colour: #ffffff; /* title text outline */
-      --box-colour: #f7f5f2;         /* portfolio box fill */
-      --box-hover-colour: #a8d2ff;   /* box fill under the mouse */
-      --box-active-colour: #a8d2ff;  /* box fill while its viewer is open */
+      --box-colour: #e5f9ff;         /* portfolio box fill */
+      --box-hover-colour: #a2bbec;   /* box fill under the mouse */
+      --box-active-colour: #a2bbec;  /* box fill while its viewer is open */
       --box-line-colour: #a2bbec;    /* portfolio box border */
       --box-text-colour: #000000;    /* box titles */
       --viewer-colour: #f7f5f2;      /* viewer panel fill */
-      --viewer-line-colour: #a8d2ff; /* viewer panel border */
+      --viewer-line-colour: #a2bbec; /* viewer panel border */
       --viewer-close-colour: #000000; /* viewer X */
       --gallery-colour: #f7f5f2;     /* Drawings / Experimental scroll area */
       --pdf-colour: #ffffff;         /* behind the PDFs */
@@ -129,10 +166,11 @@
       background: transparent;   /* let the wavy water edge define the boundary */
       text-align: center;
       padding: 3.5rem 1.5rem 1.9rem;
-      --tile: 320px;
+      --tile: var(--wave-tile);
     }
 
-    /* Wavy line along the header's bottom edge. The 320 x 32 tile sits in the
+    /* Wavy line along the header's bottom edge, raised by --wave-raise. The
+       --tile x 32 tile (setWaveRepeat() stretches the drawn 320) sits in the
        middle of a 64px band so thick lines aren't clipped; the strip is one
        tile wider than the screen and slides one tile left, then repeats. */
     .wave-line {
@@ -140,8 +178,8 @@
       left: 0;
       right: 0;
       bottom: 0;
-      height: calc(var(--tile) / 5);
-      transform: translateY(50%);
+      height: 64px;
+      transform: translateY(calc(50% - var(--wave-raise)));
       overflow: hidden;
       pointer-events: none;
     }
@@ -161,7 +199,7 @@
     /* Easter-egg boat: sails right-to-left across the wave every so often */
     .wave-boat {
       position: absolute;
-      bottom: -24px;
+      bottom: calc(-24px + var(--wave-raise));
       left: 100%;
       width: var(--boat-size);
       pointer-events: none;
@@ -425,13 +463,13 @@
       background-color: var(--water-colour);
       -webkit-mask-image: url("UnderWavesMaskImg.png"), linear-gradient(#000, #000);
       mask-image: url("UnderWavesMaskImg.png"), linear-gradient(#000, #000);
-      -webkit-mask-size: 320px 32px, 100% 300vh;
-      mask-size: 320px 32px, 100% 300vh;
+      -webkit-mask-size: var(--wave-tile) 32px, 100% 300vh;
+      mask-size: var(--wave-tile) 32px, 100% 300vh;
       -webkit-mask-repeat: repeat-x, no-repeat;
       mask-repeat: repeat-x, no-repeat;
       -webkit-mask-position: 0 var(--waterline), 0 calc(var(--waterline) + 30px);
       mask-position: 0 var(--waterline), 0 calc(var(--waterline) + 30px);
-      /* Scroll the wavy edge one tile in sync with the wave line (same 320px / 8.6s) */
+      /* Scroll the wavy edge one tile in sync with the wave line (same --wave-tile / 8.6s) */
       animation: waterFlow 8.6s linear infinite;
     }
 
@@ -441,8 +479,8 @@
         mask-position: 0 var(--waterline), 0 calc(var(--waterline) + 30px);
       }
       to {
-        -webkit-mask-position: -320px var(--waterline), 0 calc(var(--waterline) + 30px);
-        mask-position: -320px var(--waterline), 0 calc(var(--waterline) + 30px);
+        -webkit-mask-position: calc(-1 * var(--wave-tile)) var(--waterline), 0 calc(var(--waterline) + 30px);
+        mask-position: calc(-1 * var(--wave-tile)) var(--waterline), 0 calc(var(--waterline) + 30px);
       }
     }
 
@@ -536,8 +574,8 @@
 
     .pbox {
       position: absolute;
-      width: calc(185px * var(--box-scale));
-      height: calc(172px * var(--box-scale));
+      width: calc(185px * var(--box-scale) * var(--own-scale, 1));
+      height: calc(172px * var(--box-scale) * var(--own-scale, 1));
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -608,12 +646,12 @@
     .white-coloured .pbox-icon img:nth-of-type(1),
     .white-coloured .contact-icon img:nth-of-type(1) { opacity: 0; }   /* the fill replaces the white */
 
-    /* Resting: a pentagon — apex on top, two upper sides, two lower sides */
-    .pbox--illustration  { left: calc(50% - 92px * var(--box-scale)); top: 2%; }    /* apex (top centre) */
-    .pbox--experimental  { left: calc(16% - 92px * var(--box-scale)); top: 25%; }   /* upper-left */
-    .pbox--storyboarding { left: calc(84% - 92px * var(--box-scale)); top: 25%; }   /* upper-right */
-    .pbox--showreel      { left: calc(36% - 92px * var(--box-scale)); top: 62%; }   /* lower-left */
-    .pbox--drawings      { left: calc(64% - 92px * var(--box-scale)); top: 62%; }   /* lower-right */
+    /* Resting: placed by the --box-*-x / -y values (x = box centre, y = box top), sized by its own --box-*-scale */
+    .pbox--illustration  { --own-scale: var(--box-illustration-scale); --own-scale-phone: var(--box-illustration-scale-phone); left: calc(var(--box-illustration-x) - 92px * var(--box-scale) * var(--own-scale));  top: var(--box-illustration-y); }
+    .pbox--experimental  { --own-scale: var(--box-experimental-scale); --own-scale-phone: var(--box-experimental-scale-phone); left: calc(var(--box-experimental-x) - 92px * var(--box-scale) * var(--own-scale));  top: var(--box-experimental-y); }
+    .pbox--storyboarding { --own-scale: var(--box-storyboarding-scale); --own-scale-phone: var(--box-storyboarding-scale-phone); left: calc(var(--box-storyboarding-x) - 92px * var(--box-scale) * var(--own-scale)); top: var(--box-storyboarding-y); }
+    .pbox--showreel      { --own-scale: var(--box-showreel-scale); --own-scale-phone: var(--box-showreel-scale-phone); left: calc(var(--box-showreel-x) - 92px * var(--box-scale) * var(--own-scale));      top: var(--box-showreel-y); }
+    .pbox--drawings      { --own-scale: var(--box-drawings-scale); --own-scale-phone: var(--box-drawings-scale-phone); left: calc(var(--box-drawings-x) - 92px * var(--box-scale) * var(--own-scale));      top: var(--box-drawings-y); }
 
     /* ---- Open state: boxes tighten to icons and dock left, viewer opens ---- */
     .container.is-open .pbox {
@@ -766,7 +804,7 @@
       }
       .pbox {
         position: relative;   /* keeps flow layout but allows the left offsets */
-        height: calc(min(122px, 15vh) * var(--box-scale-phone));   /* smaller so five boxes fit the column */
+        height: calc(min(122px, 15vh) * var(--box-scale-phone) * var(--own-scale-phone, 1));   /* smaller so five boxes fit the column */
         aspect-ratio: 185 / 172;   /* keep the desktop box proportions */
         width: auto;
         padding: var(--box-padding-phone);
@@ -791,12 +829,18 @@
       .title { --t-outline: var(--title-outline-phone); }
       .wave-line .drawn-line { stroke-width: var(--wave-line-phone); }
       .water .drawn-line { stroke-width: var(--grid-line-phone); }
-      /* Random horizontal offsets (via left; transform kept free for the float) */
-      .container:not(.is-open) .pbox--illustration  { left: -32px; }
-      .container:not(.is-open) .pbox--experimental  { left: 28px; }
-      .container:not(.is-open) .pbox--storyboarding { left: -14px; }
-      .container:not(.is-open) .pbox--showreel      { left: 36px; }
-      .container:not(.is-open) .pbox--drawings      { left: calc(64% - 92px); }   /* as before Box scale: the web Box scale doesn't move it here */
+      /* Closed: placed freely by the --box-*-x-phone / -y-phone values (x = box centre,
+         y = box top) in an area the height of the old five-box column */
+      .container:not(.is-open) .pboxes {
+        display: block;
+        height: calc(5 * min(122px, 15vh) * var(--box-scale-phone) + 2.8vh + 0.3rem);
+      }
+      .container:not(.is-open) .pbox { position: absolute; transform: translateX(-50%); }
+      .container:not(.is-open) .pbox--illustration  { left: var(--box-illustration-x-phone);  top: var(--box-illustration-y-phone); }
+      .container:not(.is-open) .pbox--experimental  { left: var(--box-experimental-x-phone);  top: var(--box-experimental-y-phone); }
+      .container:not(.is-open) .pbox--storyboarding { left: var(--box-storyboarding-x-phone); top: var(--box-storyboarding-y-phone); }
+      .container:not(.is-open) .pbox--showreel      { left: var(--box-showreel-x-phone);      top: var(--box-showreel-y-phone); }
+      .container:not(.is-open) .pbox--drawings      { left: var(--box-drawings-x-phone);      top: var(--box-drawings-y-phone); }
 
       /* Open: the four icons sit in a fixed single row ABOVE the viewer */
       .container.is-open .pboxes {
@@ -996,12 +1040,13 @@
       closeViewer();
     });
 
-    // Keep the wavy waterline pinned to the actual header height, so the water
-    // edge meets the wave line at every window width.
+    // Keep the wavy waterline pinned to the actual header height (raised by
+    // --wave-raise), so the water edge meets the wave line at every window width.
     let skyCut = null;   // title gap edges in px, for setSkySteps()
     function setWaterline() {
       const h = document.querySelector('.fixed-header').getBoundingClientRect().bottom;
-      document.documentElement.style.setProperty('--waterline', Math.round(h - 15) + 'px');
+      const raise = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--wave-raise')) || 0;
+      document.documentElement.style.setProperty('--waterline', Math.round(h - 15 - raise) + 'px');
       // Keep the skyline cut-out tight to the actual title TEXT width (the h1 is
       // full-width, so measure the text with a Range instead of the element box)
       const range = document.createRange();
@@ -1030,6 +1075,23 @@
     if (window.ResizeObserver) {
       new ResizeObserver(setWaterline).observe(document.querySelector('.fixed-header'));
     }
+
+    // Wave repeat: pattern width isn't CSS, so stretch the drawn 320px wave
+    // across --wave-tile (x coordinates only, so the line keeps its thickness)
+    const waveTile = document.getElementById('waveTile');
+    const waveD = waveTile.querySelector('path').getAttribute('d');
+    let waveWidth = 0;
+    function setWaveRepeat() {
+      const w = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--wave-tile')) || 320;
+      if (w === waveWidth) return;
+      waveWidth = w;
+      let i = 0;
+      waveTile.setAttribute('width', w);
+      waveTile.querySelector('path').setAttribute('d',
+        waveD.replace(/-?[\d.]+/g, n => (i++ % 2 ? n : String(+(parseFloat(n) * w / 320).toFixed(2)))));
+    }
+    setWaveRepeat();
+    window.addEventListener('resize', setWaveRepeat);   // web <-> phone value
 
     // Skyline scale: pattern size isn't CSS, so copy --sky-scale onto the tile
     function setSkyline() {
@@ -1194,7 +1256,7 @@
     document.addEventListener('keydown', e => { if (e.key === 'Escape') phoneCard.hidden = true; });
 
     // The Website Tuner swaps the <style> text when a value changes
-    new MutationObserver(() => { setWaterline(); setSkyline(); setShadingFill(); setPhone(); }).observe(document.head, { childList: true, characterData: true, subtree: true });
+    new MutationObserver(() => { setWaveRepeat(); setWaterline(); setSkyline(); setShadingFill(); setPhone(); }).observe(document.head, { childList: true, characterData: true, subtree: true });
   </script>
 </body>
 </html>
