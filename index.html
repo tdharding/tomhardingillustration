@@ -995,6 +995,10 @@
     @media (max-width: 480px) {
       body { padding: 1rem 1rem 0.75rem; }
       .container { --page-top: 1rem; }   /* the body's top padding */
+      /* The smaller header padding (bottom 1.9rem -> 1rem) and body padding
+         (1.5rem -> 1rem) lift the boxes ~22px more than the title, so add it
+         back: the title-to-buttons gap matches 481-900px */
+      .container { padding-top: calc(var(--boxes-top) + 34px + 22px); }
       .fixed-header { padding: 1.2rem 1rem 1rem; }
       .contact-link { top: calc(1.2rem - var(--mail-offset-phone)); right: 1.2rem; }
       .contact-icon { width: var(--mail-size-phone); }
