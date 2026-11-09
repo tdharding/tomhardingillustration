@@ -38,6 +38,7 @@
       --box-scale: 1.2;                /* portfolio box size (closed boxes) */
       --box-line: 6px;             /* portfolio box border */
       --viewer-line: 6px;          /* viewer panel border */
+      --viewer-width: 1024px;       /* viewer panel width (948 = the old fill of the content area) */
       --box-corner: 15px;             /* portfolio box corner rounding */
       --box-padding: 0.6rem;         /* space inside portfolio boxes */
       --title-size-large: 2.48rem;   /* title, largest (wide windows) */
@@ -120,6 +121,7 @@
       --box-scale-phone: 1;          /* under 900px, closed boxes */
       --box-line-phone: 4.2px;       /* under 900px */
       --viewer-line-phone: 1.8px;    /* under 900px */
+      --viewer-width-phone: 92vw;    /* under 900px, viewer width, centred */
       --box-corner-phone: 10px;       /* under 900px */
       --box-padding-phone: 0.35rem;  /* under 900px */
       --title-size-small: 1.605rem;  /* title, smallest (narrow windows) */
@@ -218,18 +220,18 @@
       --box-active-colour: #a2bbec;  /* box fill while its viewer is open */
       --box-line-colour: #a2bbec;    /* portfolio box border */
       --box-text-colour: #000000;    /* box titles */
-      --viewer-colour: #ffffff;      /* viewer panel fill */
+      --viewer-colour: #f7f5f2;      /* viewer panel fill */
       --viewer-line-colour: #a2bbec; /* viewer panel border */
-      --gallery-colour: #ffffff;     /* scroll area of boxes with images (Drawings, Experimental ...) */
-      --pdf-colour: #e5f9ff;         /* behind the PDFs */
-      --footer-colour: #e5f9ff;      /* copyright line */
+      --gallery-colour: #f7f5f2;     /* scroll area of boxes with images (Drawings, Experimental ...) */
+      --pdf-colour: #ffffff;         /* behind the PDFs */
+      --footer-colour: #aaaaaa;      /* copyright line */
       /* Night colours (7pm-7am, viewer's clock): the same list, swapped in while
          is-night is on <html> (page background night = --page-night-colour above) */
       --water-night-colour: #5e7ba1;
       --grid-line-night-colour: #365587;
       --wave-line-night-colour: #a2bbec;
-      --skyline-night-colour: #365587;
-      --skyline-fill-night-colour: #17253b;
+      --skyline-night-colour: #a2bbec;
+      --skyline-fill-night-colour: #365587;
       --cloud-night-colour: #000000;
       --cloud-fill-night-colour: #1f2e4d;
       --logo-shading-night-colour: #a2bbec;
@@ -244,13 +246,13 @@
       --box-active-night-colour: #a2bbec;
       --box-line-night-colour: #a2bbec;
       --box-text-night-colour: #000000;
-      --viewer-night-colour: #ffffff;
+      --viewer-night-colour: #f7f5f2;
       --viewer-line-night-colour: #a2bbec;
-      --gallery-night-colour: #ffffff;
-      --pdf-night-colour: #e5f9ff;
-      --footer-night-colour: #e5f9ff;
+      --gallery-night-colour: #f7f5f2;
+      --pdf-night-colour: #ffffff;
+      --footer-night-colour: #aaaaaa;
       /* Skyline lights (night only) */
-      --skyline-lights-colour: #647caa;   /* window dots in the skyline */
+      --skyline-lights-colour: #a2bbec;   /* window dots in the skyline */
       --skyline-lights-seed: 1;           /* layout of the dots; Reroll for a new one */
       /* Contact */
       --phone-number: "+447944984176";            /* the phone icon calls this */
@@ -894,7 +896,9 @@
       position: absolute;
       top: 1%;
       left: 172px;
-      right: 0;
+      /* Viewer width; it can reach past the content area but stops 16px short of the window edge */
+      width: var(--viewer-width);
+      max-width: calc(100% - 172px + max(0px, (100vw - 1120px) / 2 - 16px));
       height: calc(70vh - 14px);
       max-height: 650px;
       background: var(--viewer-colour);
@@ -930,6 +934,13 @@
       max-width: 640px;
       height: auto;
       margin: 0 auto 14px;
+      /* Images can't be right-clicked, dragged out or long-pressed to save:
+         clicks pass through to the gallery behind them */
+      pointer-events: none;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      -webkit-user-drag: none;
     }
     .viewer-body .gallery img:last-child { margin-bottom: 0; }
     .viewer-body .video-wrap { position: absolute; inset: 0; height: 100%; padding: 0; border: none; border-radius: 0; }
@@ -1090,8 +1101,10 @@
 
       .viewer {
         position: fixed;
-        left: 4vw;
-        right: 4vw;
+        left: calc((100vw - var(--viewer-width-phone)) / 2);   /* Viewer width (phone), centred */
+        right: calc((100vw - var(--viewer-width-phone)) / 2);
+        width: auto;
+        max-width: none;
         top: calc(var(--boxes-top) + 96px + var(--page-top));   /* below the icon row, leaving a gap */
         bottom: 3vh;
         height: auto;
@@ -1258,7 +1271,7 @@
           '<div class="gallery">' +
           (video ? '<div class="video-wrap"><iframe src="' + video + '" title="' + s.title + '" allowfullscreen></iframe></div>' : '') +
           (pdf ? '<iframe class="pdf-frame" src="' + getPdfSrc(pdf) + '" title="' + s.title + '"></iframe>' : '') +
-          images.map(function (src) { return '<img src="' + src + '" alt="">'; }).join('') +
+          images.map(function (src) { return '<img src="' + src + '" alt="" draggable="false">'; }).join('') +
           '</div>';
       } else if (s.type === 'pdf') {
         viewerBody.innerHTML =
@@ -1268,6 +1281,14 @@
           '<div class="video-wrap"><iframe src="' + s.file + '" title="' + s.title + '" allowfullscreen></iframe></div>';
       }
     }
+
+    // No right-click menu (Save image / Open image in new tab) over the gallery
+    viewerBody.addEventListener('contextmenu', function (e) {
+      if (e.target.closest('.gallery')) e.preventDefault();
+    });
+    viewerBody.addEventListener('dragstart', function (e) {
+      if (e.target.closest('.gallery')) e.preventDefault();
+    });
 
     function openSection(id) {
       if (!SECTIONS[id]) return;
