@@ -583,9 +583,11 @@
     .phone-contact .contact-link { position: static; }
 
     /* While the viewer is open the mail hand and phone shift by their preview
-       offsets, on top of the normal ones */
+       offsets, on top of the normal ones; they glide there with the boxes' timing */
     .fixed-header > .contact-link { --open-x: var(--mail-open-x);  --open-y: var(--mail-open-y); }
     .phone-contact                { --open-x: var(--phone-open-x); --open-y: var(--phone-open-y); }
+    .fixed-header > .contact-link,
+    .phone-contact { translate: 0 0; transition: translate .6s cubic-bezier(.6,.05,.25,1); }
     body.panel-open .fixed-header > .contact-link,
     body.panel-open .phone-contact { translate: var(--open-x) calc(-1 * var(--open-y)); }
     .phone-contact .contact-icon { width: var(--phone-size); aspect-ratio: 594 / 1044; }
