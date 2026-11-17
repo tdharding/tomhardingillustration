@@ -39,14 +39,15 @@
       --box-line: 6px;             /* portfolio box border */
       --viewer-line: 6px;          /* viewer panel border */
       --viewer-width: 1051px;       /* viewer panel width (948 = the old fill of the content area) */
+      --viewer-image-width: 973px;  /* gallery image width inside the viewer (never wider than the viewer) */
       --box-corner: 15px;             /* portfolio box corner rounding */
       --box-padding: 0.6rem;         /* space inside portfolio boxes */
       --title-size-large: 2.48rem;   /* title, largest (wide windows) */
       --title-outline: 3.6px;          /* title text outline */
       --title-offset: -17px;           /* title text up (+) or down (-), nothing else moves */
-      --circle-size: 103px;             /* circle above the title (day and night) */
-      --circle-x: -99px;                 /* circle right (+) or left (-) of the title centre */
-      --circle-y: -54px;                /* gap from the title's top line up to the circle (+ = higher) */
+      --circle-size: 103px;             /* circle in the sky (day and night), not tied to the title */
+      --circle-x: -99px;                 /* circle right (+) or left (-) of the window centre */
+      --circle-y: 20px;                /* gap from the window top down to the circle (+ = lower) */
       --circle-line: 0px;            /* circle outline */
       --button-text: 1.97rem;       /* box titles */
       --logo-size: 163px;            /* box logos */
@@ -92,6 +93,7 @@
       --skyline-pattern: mirrored-opposite;    /* step pattern: mirrored, mirrored-opposite, left, right */
       --cloud-scale: 0.23;            /* cloud size (1 = as drawn); smaller repeats more */
       --cloud-height: 13px;          /* clouds up (+) or down (-), apart from the waterline and skyline */
+      --cloud-pan: -3.5;                /* cloud pan speed, px a second: right (+), left (-), 0 = still */
       --cloud-nodes: 0% 1px 0, 10% -18px 0.16, 20% 25px 0.26, 26% 28px 0.16, 33% 15px 0.05, 41% -14px 0, 48% 2px 0.09, 54% 0px 0.19, 65% 14px -0.05, 75% 34px 0.06, 87% 17px 0, 100% 0px 0.32;   /* across % from the left edge, height px (+ Cloud height), scale +/- (+ Cloud scale) */
       /* Skyline lights: dots in the skyline buildings, night only */
       --skyline-lights-spacing: 7.5px;      /* grid cell; one dot per cell at most */
@@ -127,27 +129,28 @@
       --box-line-phone: 4.2px;       /* under 900px */
       --viewer-line-phone: 1.8px;    /* under 900px */
       --viewer-width-phone: 92vw;    /* under 900px, viewer width, centred */
+      --viewer-image-width-phone: 874px; /* under 900px, gallery image width inside the viewer */
       --box-corner-phone: 10px;       /* under 900px */
       --box-padding-phone: 0.35rem;  /* under 900px */
       --title-size-small: 1.605rem;  /* title, smallest (narrow windows) */
       --title-outline-phone: 2.2px;    /* under 900px */
-      --title-offset-phone: -61px;     /* under 900px */
-      --circle-size-phone: 61px;       /* under 900px */
+      --title-offset-phone: -81px;     /* under 900px */
+      --circle-size-phone: 79px;       /* under 900px */
       --circle-x-phone: -39px;           /* under 900px */
-      --circle-y-phone: -28px;          /* under 900px */
-      --circle-line-phone: 1.9px;      /* under 900px */
+      --circle-y-phone: 32px;          /* under 900px */
+      --circle-line-phone: 0px;      /* under 900px */
       --button-text-phone: 1.25rem;   /* under 900px */
       --logo-size-phone: 117px;       /* under 900px, never above 10.5vh */
       --logo-size-open-phone: 51px;  /* under 900px */
       --mail-size-phone: 57px;       /* under 480px */
       --phone-size-phone: 49px;       /* under 480px */
-      --mail-offset-phone: -100px;      /* under 480px */
-      --phone-offset-phone: -100px;     /* under 480px */
+      --mail-offset-phone: -87px;      /* under 480px */
+      --phone-offset-phone: -85px;     /* under 480px */
       --mail-open-x-phone: 0px;      /* under 480px */
-      --mail-open-y-phone: 102px;      /* under 480px */
+      --mail-open-y-phone: 47px;      /* under 480px */
       --phone-open-x-phone: 0px;     /* under 480px */
-      --phone-open-y-phone: 100px;     /* under 480px */
-      --boat-size-phone: 60px;       /* under 900px */
+      --phone-open-y-phone: 47px;     /* under 480px */
+      --boat-size-phone: 54px;       /* under 900px */
       --boat-offset-phone: 15px;      /* under 900px */
       --fish-size-phone: 26px;       /* under 1320px */
       /* Fish swimming areas under 1320px: across = gap from the area's own screen
@@ -166,20 +169,21 @@
       --fish-right2-height-phone: 90px;
       --wave-line-phone: 3px;      /* under 900px */
       --wave-repeat-phone: 109px;    /* under 900px */
-      --grid-repeat-phone: 58px;    /* under 900px */
-      --skyline-grid-repeat-phone: 58px; /* under 900px */
+      --grid-repeat-phone: 120px;    /* under 900px */
+      --skyline-grid-repeat-phone: 30px; /* under 900px */
       --wave-height-phone: -130px;      /* under 900px */
       --grid-line-phone: 2.8px;      /* under 900px */
       --skyline-line-phone: 1.9px;   /* under 900px */
       --cloud-line-phone: 1.9px;     /* under 900px */
       --skyline-step-width-phone: 12px; /* under 900px */
       --skyline-step-height-phone: 7px; /* under 900px */
-      --skyline-nodes-phone: 0% -45px 0px 0px, 22% -47px 0px 0px, 43% -36px 0px 0px, 59% -7px 0px 4px, 72% 14px 0px 3px, 84% 7px 0px 2px, 99% 15px 0px 0px; /* under 900px */
+      --skyline-nodes-phone: 0% -45px 0px 0px, 22% -47px 0px 0px, 46% -18px 0px 0px, 56% -1px 0px 4px, 71% 19px 0px 3px, 83% 25px 0px 2px, 99% 15px 0px 0px; /* under 900px */
       --skyline-mirror-phone: 0px;    /* under 900px */
       --skyline-height-phone: -52px;  /* under 900px */
       --skyline-pattern-phone: mirrored-opposite; /* under 900px */
       --cloud-scale-phone: 0.12;      /* under 900px */
       --cloud-height-phone: -25px;    /* under 900px */
+      --cloud-pan-phone: 0;           /* under 900px */
       --cloud-nodes-phone: 0% 37px 0, 12% 9px 0, 24% -14px 0.07, 37% -26px 0.02, 49% -22px -0.12, 64% -8px 0, 75% 2px 0.07, 86% 6px 0, 100% 0px 0; /* under 900px */
       --skyline-lights-spacing-phone: 3.5px;   /* under 900px */
       --skyline-lights-amount-phone: 0.45;   /* under 900px */
@@ -765,6 +769,7 @@
       --cloud-tile: var(--cloud-scale);
       --cloud-stroke: var(--cloud-line);
       --cloud-node-list: var(--cloud-nodes);
+      --cloud-pan-speed: var(--cloud-pan);
     }
     .skyline .clouds .cloud-fill { fill: var(--cloud-fill-colour); }
     .skyline .clouds .drawn-line { fill: none; stroke: var(--cloud-colour); stroke-width: var(--cloud-stroke); }
@@ -807,10 +812,11 @@
       pointer-events: auto;       /* clicking it leaves the viewer */
     }
 
-    /* Circle above the title, day and night (night colours swap in with is-night).
-       Centred on the title text (--title-centre / --title-top set in JS), its
-       bottom --c-y above the title's top line, --c-x right (+) or left (-).
-       Sits behind the clouds and skyline (earlier in the page, same z-index). */
+    /* Circle in the sky, day and night (night colours swap in with is-night).
+       Placed against the window, NOT the title (title offset / size don't move
+       it): centre --c-x right (+) or left (-) of the window centre, top --c-y
+       down from the window top. Sits behind the clouds and skyline (earlier in
+       the page, same z-index). */
     .sky-circle {
       --c-size: var(--circle-size);
       --c-x: var(--circle-x);
@@ -820,8 +826,8 @@
       z-index: 0;
       width: var(--c-size);
       height: var(--c-size);
-      left: calc(var(--title-centre, 50vw) + var(--c-x) - var(--c-size) / 2);
-      top: calc(var(--title-top, 80px) - var(--c-y) - var(--c-size));
+      left: calc(50vw + var(--c-x) - var(--c-size) / 2);
+      top: var(--c-y);
       border-radius: 50%;
       background: var(--circle-colour);
       border: var(--c-line) solid var(--circle-line-colour);
@@ -985,7 +991,7 @@
     .viewer-body .gallery img {
       display: block;
       width: 100%;
-      max-width: 640px;
+      max-width: var(--viewer-image-width);   /* Viewer image width */
       height: auto;
       margin: 0 auto 14px;
       /* Images can't be right-clicked, dragged out or long-pressed to save:
@@ -1114,6 +1120,7 @@
         --cloud-tile: var(--cloud-scale-phone);
         --cloud-stroke: var(--cloud-line-phone);
         --cloud-node-list: var(--cloud-nodes-phone);
+        --cloud-pan-speed: var(--cloud-pan-phone);
       }
       .title { --t-outline: var(--title-outline-phone); --t-offset: var(--title-offset-phone); }
       .wave-line .drawn-line { stroke-width: var(--wave-line-phone); }
@@ -1167,6 +1174,7 @@
         z-index: 60;
         border-width: var(--viewer-line-phone);
       }
+      .viewer-body .gallery img { max-width: var(--viewer-image-width-phone); }   /* Viewer image width (phone) */
 
       /* Copyright line pinned to the bottom of the window, in the 3vh under the viewer */
       footer {
@@ -1406,9 +1414,6 @@
       const rects = [...range.getClientRects()];
       if (rects.length) {
         skyCentre = (Math.min(...rects.map(r => r.left)) + Math.max(...rects.map(r => r.right))) / 2;
-        // Circle: centred on the title text, sitting above its top line
-        document.documentElement.style.setProperty('--title-centre', skyCentre + 'px');
-        document.documentElement.style.setProperty('--title-top', Math.min(...rects.map(r => r.top)) + 'px');
         setSkyline();
       }
       if (cloudKey !== undefined) setClouds();   // their ground moves too
@@ -1653,6 +1658,8 @@
       const drop = parseFloat(getComputedStyle(layer).getPropertyValue('--sky-drop')) || 0;
       const base = (parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--cloud-ground')) || 0) + 32 - drop;
       const floor = box.height + 1;
+      cloudPan = (parseFloat(css.getPropertyValue('--cloud-pan-speed')) || 0) / S;   // drawing px a second
+      if (cloudPan && !cloudLoop) cloudLoop = requestAnimationFrame(panClouds);
       const key = [W, base, floor, S, JSON.stringify(nodes)].join('|');
       if (key === cloudKey) return;
       cloudKey = key;
@@ -1693,9 +1700,13 @@
       const tokens = id => document.getElementById(id).getAttribute('d').match(/[A-Za-z]|-?[\d.]+/g);
       const fillSrc = tokens('cloudFillDrawn'), lineSrc = tokens('cloudLineDrawn');
       const uEnd = us[us.length - 1 - PAD / STEP];   // drawing x at the right edge
+      // Drawn with the tiles slid along by `phase` drawing px (Cloud pan
+      // speed): the nodes stay put on screen and the clouds pass through
+      // them, so they grow, shrink and rise as they go
+      cloudDraw = phase => {
       let fill = '', line = '';
       for (let k = -2; k * 461 <= uEnd + 485; k++) {
-        const off = k * 461;
+        const off = k * 461 + phase;
         // Fill: the contour's points, closed off down the layer
         let first = null, last = null;
         for (let i = 0; i < fillSrc.length; i++) {
@@ -1717,6 +1728,20 @@
       }
       document.getElementById('cloudFill').setAttribute('d', fill);
       document.getElementById('cloudLine').setAttribute('d', line);
+      };
+      cloudDraw(cloudPhase || 0);
+    }
+    // Cloud pan: --cloud-pan-speed px a second at Cloud scale (+ right,
+    // - left, 0 = still); runs only while the speed isn't 0
+    // (no initial values: setWaterline may already have set them)
+    var cloudPan, cloudPhase, cloudLoop, cloudLast, cloudDraw;
+    function panClouds(t) {
+      const dt = cloudLast ? Math.min(0.1, (t - cloudLast) / 1000) : 0;
+      cloudLast = t;
+      if (!cloudPan) { cloudLoop = 0; cloudLast = 0; return; }
+      cloudPhase = (((cloudPhase || 0) + cloudPan * dt) % 461 + 461) % 461;
+      if (cloudDraw) cloudDraw(cloudPhase);
+      cloudLoop = requestAnimationFrame(panClouds);
     }
     setClouds();
     window.addEventListener('resize', setClouds);   // web <-> phone value
